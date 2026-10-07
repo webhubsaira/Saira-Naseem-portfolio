@@ -110,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 7. Reveal Elements on Scroll
   if ('IntersectionObserver' in window && revealElements.length > 0) {
+    document.body.classList.add('reveal-enabled');
     const revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -172,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } catch (error) {
         console.error('Contact form error:', error);
-        alert('Network error occurred. Please reach out directly to sairainfinityfree@gmail.com');
+        alert('Network error occurred. Please reach out directly to sairanaseem606729@gmail.com');
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
@@ -187,10 +188,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightboxImg = document.getElementById('lightboxImage');
   const lightboxTitle = document.getElementById('imageLightboxModalLabel');
   const lightboxLiveDemoBtn = document.getElementById('lightboxLiveDemoBtn');
+  const lightboxZoomBtn = document.getElementById('lightboxZoomBtn');
+  const lightboxZoomIcon = document.getElementById('lightboxZoomIcon');
   const zoomBtns = document.querySelectorAll('.btn-zoom-image');
 
   if (lightboxModalEl && lightboxImg && window.bootstrap) {
     const lightboxModal = new bootstrap.Modal(lightboxModalEl);
+    const setLightboxZoom = (isZoomed) => {
+      lightboxImg.classList.toggle('lightbox-image-zoomed', isZoomed);
+      if (lightboxZoomBtn) {
+        lightboxZoomBtn.setAttribute('aria-label', isZoomed ? 'Zoom image out' : 'Zoom image in');
+        lightboxZoomBtn.title = isZoomed ? 'Zoom image out' : 'Zoom image in';
+      }
+      if (lightboxZoomIcon) {
+        lightboxZoomIcon.className = isZoomed ? 'bi bi-zoom-out' : 'bi bi-zoom-in';
+      }
+    };
+
+    if (lightboxZoomBtn) {
+      lightboxZoomBtn.addEventListener('click', () => {
+        setLightboxZoom(!lightboxImg.classList.contains('lightbox-image-zoomed'));
+      });
+    }
 
     zoomBtns.forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -200,6 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const demoUrl = btn.getAttribute('data-demo-url') || '#';
 
         if (imgSrc) {
+          setLightboxZoom(false);
           lightboxImg.src = imgSrc;
           lightboxImg.alt = imgTitle;
           if (lightboxTitle) {

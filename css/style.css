@@ -1427,21 +1427,43 @@ a:hover {
   transform: translateY(-2px);
 }
 
-/* Scroll Reveal helper transitions */
-.reveal-item {
-  opacity: 0;
-  transform: translateY(20px);
+.reveal-enabled .reveal-item {
   transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 
-.reveal-item.revealed {
+.reveal-enabled .reveal-item:not(.revealed) {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.reveal-enabled .reveal-item.revealed {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 .delay-100 { transition-delay: 80ms; }
 .delay-200 { transition-delay: 160ms; }
 .delay-300 { transition-delay: 240ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-enabled .reveal-item,
+  .reveal-enabled .reveal-item:not(.revealed) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+#lightboxImage.lightbox-image-zoomed {
+  width: 150% !important;
+  max-width: none !important;
+  max-height: none !important;
+  cursor: zoom-out;
+}
+
+#lightboxImage:not(.lightbox-image-zoomed) {
+  cursor: zoom-in;
+}
 
 /* --------------------------------------------------------------------------
    16. Media Queries & Responsive Adjustments

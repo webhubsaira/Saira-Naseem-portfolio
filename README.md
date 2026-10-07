@@ -28,12 +28,18 @@ portfolio/
 │   └── script.js           # Vanilla JavaScript for animations, filtering & navbar
 ├── images/
 │   ├── profile.jpg         # Developer profile avatar image
-│   ├── project-1.jpg       # E-Commerce Website preview
-│   ├── project-2.jpg       # Restaurant Website preview
-│   ├── project-3.jpg       # Weather Application preview
-│   ├── project-4.jpg       # Task Management App preview
-│   ├── project-5.jpg       # Portfolio Theme preview
-│   └── project-6.jpg       # Business Landing Page preview
+│   ├── project 1-thumb.webp # Optimized Developer Portfolio card image
+│   ├── project 1.png        # Developer Portfolio full-size preview
+│   ├── project 2-thumb.webp # Optimized TB Screening card image
+│   ├── project 2.png        # TB Screening full-size preview
+│   ├── project 3-thumb.webp # Optimized WeatherNow card image
+│   ├── project 3.png        # WeatherNow full-size preview
+│   ├── project 4-thumb.webp # Optimized Image Gallery card image
+│   ├── project 4.png        # Image Gallery full-size preview
+│   ├── project 5-thumb.webp # Optimized Aurum & Ecrin card image
+│   ├── project 5.png        # Aurum & Ecrin full-size preview
+│   ├── project 6-thumb.webp # Optimized RY's Ribbon Studio card image
+│   └── project 6.png        # RY's Ribbon Studio full-size preview
 └── README.md               # Documentation and GitHub Pages deployment guide
 ```
 
