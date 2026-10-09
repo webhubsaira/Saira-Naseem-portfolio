@@ -28,7 +28,7 @@
   <meta property="twitter:image" content="images/profile.jpeg" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>" />
+  <link rel="icon" type="image/png" href="images/logo.png" />
 
   <!-- Google Fonts: DM Sans and DM Serif Display -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -50,7 +50,7 @@
     <nav class="navbar navbar-expand-lg fixed-top custom-navbar" id="mainNavbar" aria-label="Main Navigation">
       <div class="container">
         <a class="navbar-brand d-flex align-items-center gap-2" href="#home">
-          <span class="navbar-brand-badge">SN</span>
+          <img class="navbar-brand-logo" src="images/logo.png" alt="" width="42" height="42" />
           <span class="brand-name">WEBHUB<span class="text-accent-blue">-SAIRA</span></span>
         </a>
 
@@ -60,9 +60,6 @@
 
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" href="#home">Home</a>
-            </li>
             <li class="nav-item">
               <a class="nav-link" href="#about">About</a>
             </li>
@@ -197,22 +194,35 @@
     <!-- About Section -->
     <section class="about-section" id="about">
       <div class="container">
-        <div class="row align-items-center g-5">
-          <!-- Left Column: Portrait Card with Background -->
+        <div class="row about-layout-row g-5">
+          <!-- Left Column: Brand Logo -->
           <div class="col-lg-5">
-            <div class="about-card-wrapper reveal-item">
-              <!-- Soft Ambient Backdrop Glow -->
-              <div class="hero-ambient-glow" aria-hidden="true"></div>
-              <div class="about-wireframe-ring" aria-hidden="true"></div>
-              <div class="about-card">
-                <img 
-                  src="images/profile.jpeg" 
-                  alt="Saira Naseem Portrait" 
-                  class="about-image" 
-                  referrerPolicy="no-referrer" 
-                />
+            <article class="about-showcase reveal-item" aria-label="Full stack development workflow">
+              <div class="about-showcase-top">
+                <div class="about-showcase-logo"><img src="images/logo.png" alt="" /></div>
+                <span class="about-showcase-brand">SAIRA NASEEM<br />FULL STACK DEVELOPER</span>
+                <span class="about-showcase-index">01 / 03</span>
               </div>
-            </div>
+              <div class="about-showcase-heading">
+                <span>END-TO-END DEVELOPMENT</span>
+                <h3>From first sketch<br /><em>to live product.</em></h3>
+              </div>
+              <div class="about-stack-flow">
+                <div class="about-stack-item">
+                  <span class="about-stack-number">01</span>
+                  <span class="about-stack-copy"><small>FRONTEND</small><strong>React + TypeScript</strong></span>
+                </div>
+                <div class="about-stack-item">
+                  <span class="about-stack-number">02</span>
+                  <span class="about-stack-copy"><small>BACKEND</small><strong>Node.js + PostgreSQL</strong></span>
+                </div>
+                <div class="about-stack-item">
+                  <span class="about-stack-number">03</span>
+                  <span class="about-stack-copy"><small>DEPLOYMENT</small><strong>GitHub + Vercel</strong></span>
+                </div>
+              </div>
+              <div class="about-showcase-foot"><span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> READY TO SHIP</span><span>WEB / APPLICATIONS</span></div>
+            </article>
           </div>
 
           <!-- Right Column: Bio & Core Stats -->
@@ -864,7 +874,7 @@
         <!-- Brand & Description -->
         <div class="col-lg-4">
           <a class="footer-brand d-flex align-items-center gap-2" href="#home">
-            <span class="navbar-brand-badge">SN</span>
+            <img class="navbar-brand-logo" src="images/logo.png" alt="" width="42" height="42" />
             <span>WEBHUB<span class="text-accent-blue">-SAIRA</span></span>
           </a>
           <p class="footer-text mt-3">
