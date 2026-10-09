@@ -844,6 +844,117 @@ a:hover {
   border-radius: 6px;
 }
 
+.projects-viewport {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+}
+
+.projects-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.projects-track {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 24px;
+  width: 100%;
+  margin: 0;
+}
+
+.projects-track .project-item {
+  flex: 0 0 calc((100% - 48px) / 3);
+  width: calc((100% - 48px) / 3);
+  padding: 0;
+  scroll-snap-align: start;
+}
+
+.projects-track .project-item[style*="display: none"] {
+  display: none !important;
+}
+
+.projects-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  width: calc((100% - 48px) / 3);
+  margin: 36px 0 0 auto;
+}
+
+.projects-status {
+  margin-right: 8px;
+  color: #65726b;
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.projects-arrow {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  color: #ffffff;
+  background: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  border-radius: 50%;
+  font-size: 1rem;
+  box-shadow: 0 6px 16px rgba(23, 106, 84, 0.18);
+  transition: color var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.projects-arrow:hover:not(:disabled) {
+  color: #183d32;
+  background: var(--color-accent-sky);
+  border-color: var(--color-accent-sky);
+  box-shadow: 0 8px 20px rgba(23, 106, 84, 0.22);
+  transform: translateY(-2px);
+}
+
+.projects-arrow:disabled {
+  color: #8b9890;
+  background: #edf1ed;
+  border-color: #dce5dd;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .projects-track .project-item {
+    flex-basis: calc((100% - 24px) / 2);
+    width: calc((100% - 24px) / 2);
+  }
+
+  .projects-controls {
+    width: calc((100% - 24px) / 2);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .projects-track {
+    gap: 16px;
+  }
+
+  .projects-track .project-item {
+    flex-basis: 100%;
+    width: 100%;
+  }
+
+  .projects-controls {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projects-viewport {
+    scroll-behavior: auto;
+    scroll-snap-type: x proximity;
+  }
+}
+
 /* --------------------------------------------------------------------------
    10. Services Section
    -------------------------------------------------------------------------- */
@@ -2102,6 +2213,27 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 14px 30px rgba(23, 45, 34, 0.09);
 }
 
+.project-card-editorial {
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(23, 45, 34, 0.08);
+}
+
+.project-card-editorial:hover {
+  border-color: rgba(23, 106, 84, 0.3);
+  box-shadow: 0 20px 40px rgba(23, 45, 34, 0.14);
+  transform: translateY(-5px);
+}
+
+.project-card-image-wrap {
+  border-radius: 16px 16px 0 0;
+}
+
+.project-card-footer {
+  padding: 20px;
+  border-radius: 0 0 16px 16px;
+}
+
 .project-card-title,
 .timeline-role,
 .service-title,
@@ -2309,6 +2441,37 @@ select.form-control-custom {
 .footer-heading,
 .footer-brand {
   color: #17231e;
+}
+
+.footer-contact-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.35;
+}
+
+.footer-contact-row i {
+  flex: 0 0 16px;
+  margin-top: 0.25em;
+}
+
+.footer-contact-row a {
+  min-width: 0;
+  color: #65726b;
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
+.footer-contact-row a:hover {
+  color: var(--color-primary);
+}
+
+.footer-contact-column .footer-heading {
+  margin-bottom: 8px;
+}
+
+.footer-contact-column .footer-contact-row {
+  margin-bottom: 4px !important;
 }
 
 .footer-bottom {

@@ -284,8 +284,9 @@
           </div>
         </div>
 
-        <!-- Projects Responsive Grid -->
-        <div class="row g-4" id="projectsContainer">
+        <!-- Projects Carousel -->
+        <div class="projects-viewport" id="projectsViewport" aria-label="Project carousel">
+          <div class="projects-track" id="projectsContainer">
           <!-- Project Card 1: Custom Portfolio Website -->
           <div class="col-md-6 col-lg-4 project-item" data-category="portfolio">
             <div class="project-card-editorial reveal-item">
@@ -417,13 +418,18 @@
               </div>
             </div>
           </div>
+
+          </div>
         </div>
 
-        <!-- Carousel Pagination Dots Indicator -->
-        <div class="d-flex justify-content-center align-items-center gap-2 mt-5" aria-hidden="true">
-          <div class="project-dot active"></div>
-          <div class="project-dot"></div>
-          <div class="project-dot"></div>
+        <div class="projects-controls" role="group" aria-label="Project carousel controls">
+          <span class="projects-status" id="projectsStatus" aria-live="polite">01 / 06</span>
+          <button type="button" class="projects-arrow" id="projectsPrev" aria-label="Previous project" disabled>
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="projects-arrow" id="projectsNext" aria-label="Next project">
+            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+          </button>
         </div>
       </div>
     </section>
@@ -919,11 +925,20 @@
         </div>
 
         <!-- Location & Availability -->
-        <div class="col-lg-3">
+        <div class="col-lg-4 footer-contact-column">
           <h4 class="footer-heading">Direct Contact</h4>
-          <p class="mb-2 text-white-50"><i class="bi bi-geo-alt-fill text-accent-blue me-2"></i> Khushab, Punjab, Pakistan</p>
-          <p class="mb-2 text-white-50"><i class="bi bi-envelope-fill text-accent-blue me-2"></i> sairanaseem606729@gmail.com</p>
-          <p class="mb-0 text-white-50"><i class="bi bi-telephone-fill text-accent-blue me-2"></i> +92 332 8562755</p>
+          <p class="footer-contact-row mb-2 text-white-50">
+            <i class="bi bi-geo-alt-fill text-accent-blue" aria-hidden="true"></i>
+            <span>Khushab, Punjab, Pakistan</span>
+          </p>
+          <p class="footer-contact-row mb-2 text-white-50">
+            <i class="bi bi-envelope-fill text-accent-blue" aria-hidden="true"></i>
+            <a href="mailto:sairanaseem606729@gmail.com">sairanaseem606729@gmail.com</a>
+          </p>
+          <p class="footer-contact-row mb-0 text-white-50">
+            <i class="bi bi-telephone-fill text-accent-blue" aria-hidden="true"></i>
+            <span>+92 332 8562755</span>
+          </p>
         </div>
       </div>
 

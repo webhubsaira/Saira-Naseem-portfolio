@@ -17,8 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const formSuccessAlert = document.getElementById('formSuccessAlert');
   const filterBtns = document.querySelectorAll('.filter-btn');
   const projectItems = document.querySelectorAll('.project-item');
+  const projectsViewport = document.getElementById('projectsViewport');
+  const previousProjectBtn = document.getElementById('projectsPrev');
+  const nextProjectBtn = document.getElementById('projectsNext');
+  const projectsStatus = document.getElementById('projectsStatus');
   const revealElements = document.querySelectorAll('.reveal-item');
-  const projectDots = document.querySelectorAll('.project-dot');
 
   // 1. Dynamic Copyright Year
   if (currentYearSpan) {
@@ -73,7 +76,50 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 5. Project Category Filtering
+  // 5. Project Carousel Controls
+  const getVisibleProjects = () => Array.from(projectItems).filter(item => item.style.display !== 'none');
+
+  const updateProjectCarousel = () => {
+    if (!projectsViewport) return;
+
+    const visibleProjects = getVisibleProjects();
+    const maxScroll = Math.max(0, projectsViewport.scrollWidth - projectsViewport.clientWidth);
+    const viewportBounds = projectsViewport.getBoundingClientRect();
+    const currentIndex = visibleProjects.findIndex(item => item.getBoundingClientRect().right > viewportBounds.left + 1);
+
+    if (previousProjectBtn) previousProjectBtn.disabled = projectsViewport.scrollLeft <= 1;
+    if (nextProjectBtn) nextProjectBtn.disabled = projectsViewport.scrollLeft >= maxScroll - 1;
+
+    if (projectsStatus) {
+      const index = Math.max(0, currentIndex);
+      projectsStatus.textContent = visibleProjects.length
+        ? `${String(index + 1).padStart(2, '0')} / ${String(visibleProjects.length).padStart(2, '0')}`
+        : '00 / 00';
+    }
+  };
+
+  const moveProjectCarousel = direction => {
+    if (!projectsViewport) return;
+
+    const firstVisibleProject = getVisibleProjects()[0];
+    if (!firstVisibleProject) return;
+
+    const track = document.getElementById('projectsContainer');
+    const gap = track ? parseFloat(window.getComputedStyle(track).columnGap) || 0 : 0;
+    const scrollAmount = firstVisibleProject.getBoundingClientRect().width + gap;
+    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    projectsViewport.scrollBy({ left: direction * scrollAmount, behavior });
+  };
+
+  if (projectsViewport) {
+    projectsViewport.addEventListener('scroll', updateProjectCarousel, { passive: true });
+    window.addEventListener('resize', updateProjectCarousel);
+    previousProjectBtn?.addEventListener('click', () => moveProjectCarousel(-1));
+    nextProjectBtn?.addEventListener('click', () => moveProjectCarousel(1));
+    updateProjectCarousel();
+  }
+
+  // 6. Project Category Filtering
   if (filterBtns.length > 0 && projectItems.length > 0) {
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -91,18 +137,10 @@ document.addEventListener('DOMContentLoaded', () => {
             item.style.display = 'none';
           }
         });
-      });
-    });
-  }
 
-  // 6. Project Pagination Dots
-  if (projectDots.length > 0) {
-    projectDots.forEach((dot, index) => {
-      dot.addEventListener('click', () => {
-        projectDots.forEach(d => d.classList.remove('active'));
-        dot.classList.add('active');
-        if (projectItems[index]) {
-          projectItems[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        if (projectsViewport) {
+          projectsViewport.scrollLeft = 0;
+          updateProjectCarousel();
         }
       });
     });
