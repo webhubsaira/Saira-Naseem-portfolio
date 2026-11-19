@@ -1,4 +1,4 @@
-# Alex Morgan - Personal Developer Portfolio Website
+# Saira Naseem - Personal Developer Portfolio
 
 A modern, responsive, and lightweight personal portfolio website designed for developers, designers, freelancers, and students. Built cleanly with **HTML5, CSS3, Vanilla JavaScript, and Bootstrap 5**.
 
@@ -186,8 +186,7 @@ Since this is a static site without a backend server, you can connect the form t
 
 ## 📝 Customization Checklist
 
-- [ ] Replace placeholder name "Alex Morgan" with your real name.
-- [ ] Add your actual email (`alex@example.com`) and phone in `index.html`.
+- [ ] Review the contact details in `index.html` and keep them current.
 - [ ] Put your own portrait photograph in `images/profile.jpg`.
 - [ ] Add your real GitHub, LinkedIn, and social URLs in the hero, about, and contact sections.
 - [ ] Update project titles, descriptions, and add your actual project screenshots in `images/project-*.jpg`.
