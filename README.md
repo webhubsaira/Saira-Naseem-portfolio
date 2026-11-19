@@ -25,7 +25,7 @@ portfolio/
 │   └── script.js           # Vanilla JavaScript for animations, filtering & navbar
 ├── images/
 │   ├── profile.jpg         # Developer profile avatar image
-│   ├── project 1-thumb.webp # Optimized Developer Portfolio card image
+│   ├── project 1-thumb.png  # Developer Portfolio card image
 │   ├── project 1.png        # Developer Portfolio full-size preview
 │   ├── project 2-thumb.webp # Optimized TB Screening card image
 │   ├── project 2.png        # TB Screening full-size preview
