@@ -6,10 +6,7 @@ This static website is 100% serverless and ready to be hosted effortlessly on **
 
 ---
 
-## 🚀 Live Demo & Preview
-
-- **Preview**: [https://USERNAME.github.io/REPOSITORY-NAME/](https://USERNAME.github.io/REPOSITORY-NAME/)
-- **Author**: Alex Morgan
+- **Author**: Saira Naseem
 - **Tech Stack**: HTML5, CSS3, Vanilla JavaScript (ES6+), Bootstrap 5.3.3, Bootstrap Icons 1.11.3, Google Fonts
 
 ---

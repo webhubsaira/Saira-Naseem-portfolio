@@ -15,12 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentYearSpan = document.getElementById('currentYear');
   const contactForm = document.getElementById('portfolioContactForm');
   const formSuccessAlert = document.getElementById('formSuccessAlert');
+  const formErrorAlert = document.getElementById('formErrorAlert');
+  const formErrorText = document.getElementById('formErrorText');
   const filterBtns = document.querySelectorAll('.filter-btn');
   const projectItems = document.querySelectorAll('.project-item');
-  const projectsViewport = document.getElementById('projectsViewport');
-  const previousProjectBtn = document.getElementById('projectsPrev');
-  const nextProjectBtn = document.getElementById('projectsNext');
-  const projectsStatus = document.getElementById('projectsStatus');
   const revealElements = document.querySelectorAll('.reveal-item');
 
   // 1. Dynamic Copyright Year
@@ -76,50 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 5. Project Carousel Controls
-  const getVisibleProjects = () => Array.from(projectItems).filter(item => item.style.display !== 'none');
-
-  const updateProjectCarousel = () => {
-    if (!projectsViewport) return;
-
-    const visibleProjects = getVisibleProjects();
-    const maxScroll = Math.max(0, projectsViewport.scrollWidth - projectsViewport.clientWidth);
-    const viewportBounds = projectsViewport.getBoundingClientRect();
-    const currentIndex = visibleProjects.findIndex(item => item.getBoundingClientRect().right > viewportBounds.left + 1);
-
-    if (previousProjectBtn) previousProjectBtn.disabled = projectsViewport.scrollLeft <= 1;
-    if (nextProjectBtn) nextProjectBtn.disabled = projectsViewport.scrollLeft >= maxScroll - 1;
-
-    if (projectsStatus) {
-      const index = Math.max(0, currentIndex);
-      projectsStatus.textContent = visibleProjects.length
-        ? `${String(index + 1).padStart(2, '0')} / ${String(visibleProjects.length).padStart(2, '0')}`
-        : '00 / 00';
-    }
-  };
-
-  const moveProjectCarousel = direction => {
-    if (!projectsViewport) return;
-
-    const firstVisibleProject = getVisibleProjects()[0];
-    if (!firstVisibleProject) return;
-
-    const track = document.getElementById('projectsContainer');
-    const gap = track ? parseFloat(window.getComputedStyle(track).columnGap) || 0 : 0;
-    const scrollAmount = firstVisibleProject.getBoundingClientRect().width + gap;
-    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-    projectsViewport.scrollBy({ left: direction * scrollAmount, behavior });
-  };
-
-  if (projectsViewport) {
-    projectsViewport.addEventListener('scroll', updateProjectCarousel, { passive: true });
-    window.addEventListener('resize', updateProjectCarousel);
-    previousProjectBtn?.addEventListener('click', () => moveProjectCarousel(-1));
-    nextProjectBtn?.addEventListener('click', () => moveProjectCarousel(1));
-    updateProjectCarousel();
-  }
-
-  // 6. Project Category Filtering
+  // 5. Project Category Filtering
   if (filterBtns.length > 0 && projectItems.length > 0) {
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -138,15 +93,11 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
 
-        if (projectsViewport) {
-          projectsViewport.scrollLeft = 0;
-          updateProjectCarousel();
-        }
       });
     });
   }
 
-  // 7. Reveal Elements on Scroll
+  // 6. Reveal Elements on Scroll
   if ('IntersectionObserver' in window && revealElements.length > 0) {
     document.body.classList.add('reveal-enabled');
     const revealObserver = new IntersectionObserver((entries, observer) => {
@@ -168,7 +119,26 @@ document.addEventListener('DOMContentLoaded', () => {
     revealElements.forEach(el => el.classList.add('revealed'));
   }
 
-  // 8. Contact Form with Web3Forms AJAX
+  // 7. Contact Form with Web3Forms AJAX
+  const showFormMessage = (type, message) => {
+    if (formSuccessAlert) {
+      formSuccessAlert.classList.toggle('d-none', type !== 'success');
+    }
+
+    if (formErrorAlert) {
+      formErrorAlert.classList.toggle('d-none', type !== 'error');
+    }
+
+    if (formErrorText && type === 'error') {
+      formErrorText.textContent = message;
+    }
+
+    const alertToFocus = type === 'success' ? formSuccessAlert : formErrorAlert;
+    if (alertToFocus) {
+      alertToFocus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  };
+
   if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -176,10 +146,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!contactForm.checkValidity()) {
         e.stopPropagation();
         contactForm.classList.add('was-validated');
+        showFormMessage('error', 'Please complete all required fields before sending your message.');
         return;
       }
 
       contactForm.classList.add('was-validated');
+      showFormMessage('success', '');
 
       const submitBtn = document.getElementById('contactSubmitBtn');
       const originalBtnText = submitBtn ? submitBtn.innerHTML : 'SEND MESSAGE';
@@ -206,12 +178,15 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           contactForm.reset();
           contactForm.classList.remove('was-validated');
+          if (formErrorAlert) {
+            formErrorAlert.classList.add('d-none');
+          }
         } else {
-          alert(data.message || 'Something went wrong. Please try again.');
+          showFormMessage('error', data.message || 'Something went wrong. Please try again.');
         }
       } catch (error) {
         console.error('Contact form error:', error);
-        alert('Network error occurred. Please reach out directly to sairanaseem606729@gmail.com');
+        showFormMessage('error', 'Network error occurred. Please reach out directly to sairanaseem606729@gmail.com');
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
@@ -221,59 +196,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 9. Fullscreen Image Lightbox Viewer
-  const lightboxModalEl = document.getElementById('imageLightboxModal');
-  const lightboxImg = document.getElementById('lightboxImage');
-  const lightboxTitle = document.getElementById('imageLightboxModalLabel');
-  const lightboxLiveDemoBtn = document.getElementById('lightboxLiveDemoBtn');
-  const lightboxZoomBtn = document.getElementById('lightboxZoomBtn');
-  const lightboxZoomIcon = document.getElementById('lightboxZoomIcon');
-  const zoomBtns = document.querySelectorAll('.btn-zoom-image');
-
-  if (lightboxModalEl && lightboxImg && window.bootstrap) {
-    const lightboxModal = new bootstrap.Modal(lightboxModalEl);
-    const setLightboxZoom = (isZoomed) => {
-      lightboxImg.classList.toggle('lightbox-image-zoomed', isZoomed);
-      if (lightboxZoomBtn) {
-        lightboxZoomBtn.setAttribute('aria-label', isZoomed ? 'Zoom image out' : 'Zoom image in');
-        lightboxZoomBtn.title = isZoomed ? 'Zoom image out' : 'Zoom image in';
-      }
-      if (lightboxZoomIcon) {
-        lightboxZoomIcon.className = isZoomed ? 'bi bi-zoom-out' : 'bi bi-zoom-in';
-      }
-    };
-
-    if (lightboxZoomBtn) {
-      lightboxZoomBtn.addEventListener('click', () => {
-        setLightboxZoom(!lightboxImg.classList.contains('lightbox-image-zoomed'));
-      });
-    }
-
-    zoomBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const imgSrc = btn.getAttribute('data-img-src');
-        const imgTitle = btn.getAttribute('data-img-title') || 'Project Preview';
-        const demoUrl = btn.getAttribute('data-demo-url') || '#';
-
-        if (imgSrc) {
-          setLightboxZoom(false);
-          lightboxImg.src = imgSrc;
-          lightboxImg.alt = imgTitle;
-          if (lightboxTitle) {
-            lightboxTitle.textContent = imgTitle;
-          }
-          if (lightboxLiveDemoBtn) {
-            lightboxLiveDemoBtn.href = demoUrl;
-            if (demoUrl === '#' || !demoUrl) {
-              lightboxLiveDemoBtn.style.display = 'none';
-            } else {
-              lightboxLiveDemoBtn.style.display = 'inline-flex';
-            }
-          }
-          lightboxModal.show();
-        }
-      });
-    });
-  }
 });

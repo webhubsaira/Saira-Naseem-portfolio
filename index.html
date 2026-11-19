@@ -29,6 +29,7 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="images/logo.png" />
+  <link rel="apple-touch-icon" href="images/logo.png" />
 
   <!-- Google Fonts: DM Sans and DM Serif Display -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -50,8 +51,7 @@
     <nav class="navbar navbar-expand-lg fixed-top custom-navbar" id="mainNavbar" aria-label="Main Navigation">
       <div class="container">
         <a class="navbar-brand d-flex align-items-center gap-2" href="#home">
-          <img class="navbar-brand-logo" src="images/logo.png" alt="" width="42" height="42" />
-          <span class="brand-name">WEBHUB<span class="text-accent-blue">-SAIRA</span></span>
+          <img class="navbar-brand-logo" src="images/logo.png" alt="Web dev logo" width="132" height="88" />
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -117,7 +117,7 @@
                   <a href="https://github.com/webhubsaira/" class="social-circle-btn" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" id="socialGithub">
                     <i class="bi bi-github"></i>
                   </a>
-                  <a href="https://linkedin.com/in/saira-naseem-a9a958408" class="social-circle-btn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" id="socialLinkedin">
+                  <a href="https://www.linkedin.com/in/saira-naseem-a9a958408" class="social-circle-btn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" id="socialLinkedin">
                     <i class="bi bi-linkedin"></i>
                   </a>
                   <a href="https://wa.me/+923328562755" class="social-circle-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Profile" id="socialWhatsapp">
@@ -194,46 +194,15 @@
     <!-- About Section -->
     <section class="about-section" id="about">
       <div class="container">
-        <div class="row about-layout-row g-5">
-          <!-- Left Column: Brand Logo -->
-          <div class="col-lg-5">
-            <article class="about-showcase reveal-item" aria-label="Full stack development workflow">
-              <div class="about-showcase-top">
-                <div class="about-showcase-logo"><img src="images/logo.png" alt="" /></div>
-                <span class="about-showcase-brand">SAIRA NASEEM<br />FULL STACK DEVELOPER</span>
-                <span class="about-showcase-index">01 / 03</span>
-              </div>
-              <div class="about-showcase-heading">
-                <span>END-TO-END DEVELOPMENT</span>
-                <h3>From first sketch<br /><em>to live product.</em></h3>
-              </div>
-              <div class="about-stack-flow">
-                <div class="about-stack-item">
-                  <span class="about-stack-number">01</span>
-                  <span class="about-stack-copy"><small>FRONTEND</small><strong>React + TypeScript</strong></span>
-                </div>
-                <div class="about-stack-item">
-                  <span class="about-stack-number">02</span>
-                  <span class="about-stack-copy"><small>BACKEND</small><strong>Node.js + PostgreSQL</strong></span>
-                </div>
-                <div class="about-stack-item">
-                  <span class="about-stack-number">03</span>
-                  <span class="about-stack-copy"><small>DEPLOYMENT</small><strong>GitHub + Vercel</strong></span>
-                </div>
-              </div>
-              <div class="about-showcase-foot"><span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> READY TO SHIP</span><span>WEB / APPLICATIONS</span></div>
-            </article>
-          </div>
-
-          <!-- Right Column: Bio & Core Stats -->
-          <div class="col-lg-7">
+        <div class="row about-layout-row">
+          <div class="col-lg-10 mx-auto">
             <div class="about-content reveal-item delay-100">
               <span class="hero-small-tag">ABOUT ME</span>
-              <h2 class="section-title">Architecting Modern Web Experiences &amp; Robust Applications</h2>
-              <p class="text-white-50 mb-3">
+              <h2 class="section-title about-gradient-heading">Architecting Modern Web Experiences &amp; Robust Applications</h2>
+              <p class="about-description mb-3">
                 I am a Full Stack Developer with practical experience in crafting responsive client-side interfaces, architecting relational databases with PostgreSQL, and building reliable backend APIs with Node.js and Express.
               </p>
-              <p class="text-white-50 mb-4">
+              <p class="about-description mb-4">
                 Holding a Computer Science background from Government Post Graduate College for Women Mardan (affiliated with Women University Mardan), I combine academic rigor with practical development to deliver fast, secure, and accessible web solutions.
               </p>
 
@@ -254,7 +223,7 @@
               </div>
 
               <!-- About Actions -->
-              <div class="d-flex align-items-center gap-3 mt-4 pt-2">
+              <div class="d-flex align-items-center justify-content-center gap-3 mt-4 pt-2">
                 <a href="#contact" class="btn-pill-primary">GET IN TOUCH</a>
                 <a href="saira.pdf" download="Saira-Naseem-CV.pdf" class="btn-pill-outline">DOWNLOAD CV</a>
               </div>
@@ -284,14 +253,13 @@
           </div>
         </div>
 
-        <!-- Projects Carousel -->
-        <div class="projects-viewport" id="projectsViewport" aria-label="Project carousel">
-          <div class="projects-track" id="projectsContainer">
+        <!-- Projects Grid -->
+        <div class="row g-4" id="projectsContainer" aria-label="Projects">
           <!-- Project Card 1: Custom Portfolio Website -->
           <div class="col-md-6 col-lg-4 project-item" data-category="portfolio">
             <div class="project-card-editorial reveal-item">
               <div class="project-card-image-wrap" data-bs-toggle="modal" data-bs-target="#projectModal1" role="button" aria-label="View Saira Naseem Developer Portfolio">
-                <img src="images/project 1-thumb.webp" alt="Saira Naseem developer portfolio website" class="project-card-image btn-zoom-image" data-img-src="images/project 1.png" data-img-title="Developer Portfolio" data-demo-url="https://webhubsaira.github.io/" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
+                <img src="images/project 1-thumb.webp" alt="Saira Naseem developer portfolio website" class="project-card-image" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
                 <div class="project-card-image-overlay">
                   <span class="project-card-overlay-btn"><i class="bi bi-box-arrow-up-right"></i> Live Demo</span>
                 </div>
@@ -313,7 +281,7 @@
           <div class="col-md-6 col-lg-4 project-item" data-category="healthcare">
             <div class="project-card-editorial reveal-item delay-100">
               <div class="project-card-image-wrap" data-bs-toggle="modal" data-bs-target="#projectModal2" role="button" aria-label="View TB Screening System">
-                <img src="images/project 2-thumb.webp" alt="TB screening portal with chest X-ray and cough analyzers" class="project-card-image btn-zoom-image" data-img-src="images/project 2.png" data-img-title="TB Screening System" data-demo-url="https://github.com/webhubsaira" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
+                <img src="images/project 2-thumb.webp" alt="TB screening portal with chest X-ray and cough analyzers" class="project-card-image" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
                 <div class="project-card-image-overlay">
                   <span class="project-card-overlay-btn"><i class="bi bi-box-arrow-up-right"></i> Live Demo</span>
                 </div>
@@ -335,7 +303,7 @@
           <div class="col-md-6 col-lg-4 project-item" data-category="weather">
             <div class="project-card-editorial reveal-item delay-200">
               <div class="project-card-image-wrap" data-bs-toggle="modal" data-bs-target="#projectModal3" role="button" aria-label="View WeatherNow forecast dashboard">
-                <img src="images/project 3-thumb.webp" alt="WeatherNow dashboard with forecasts, air quality, and weather map" class="project-card-image btn-zoom-image" data-img-src="images/project 3.png" data-img-title="WeatherNow Dashboard" data-demo-url="https://github.com/webhubsaira" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
+                <img src="images/project 3-thumb.webp" alt="WeatherNow dashboard with forecasts, air quality, and weather map" class="project-card-image" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
                 <div class="project-card-image-overlay">
                   <span class="project-card-overlay-btn"><i class="bi bi-box-arrow-up-right"></i> Live Demo</span>
                 </div>
@@ -357,7 +325,7 @@
           <div class="col-md-6 col-lg-4 project-item" data-category="gallery">
             <div class="project-card-editorial reveal-item">
               <div class="project-card-image-wrap" data-bs-toggle="modal" data-bs-target="#projectModal4" role="button" aria-label="View Image Gallery">
-                <img src="images/project 4-thumb.webp" alt="Image gallery with photo search, category filters, and favorites" class="project-card-image btn-zoom-image" data-img-src="images/project 4.png" data-img-title="Image Gallery" data-demo-url="https://github.com/webhubsaira" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
+                <img src="images/project 4-thumb.webp" alt="Image gallery with photo search, category filters, and favorites" class="project-card-image" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
                 <div class="project-card-image-overlay">
                   <span class="project-card-overlay-btn"><i class="bi bi-box-arrow-up-right"></i> Live Demo</span>
                 </div>
@@ -379,7 +347,7 @@
           <div class="col-md-6 col-lg-4 project-item" data-category="ecommerce">
             <div class="project-card-editorial reveal-item delay-100">
               <div class="project-card-image-wrap" data-bs-toggle="modal" data-bs-target="#projectModal5" role="button" aria-label="View Aurum and Écrin jewelry boutique">
-                <img src="images/project 5-thumb.webp" alt="Aurum and Écrin luxury jewelry online boutique" class="project-card-image btn-zoom-image" data-img-src="images/project 5.png" data-img-title="Aurum &amp; Écrin Jewelry Boutique" data-demo-url="https://webhubsaira.github.io/" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
+                <img src="images/project 5-thumb.webp" alt="Aurum and Écrin luxury jewelry online boutique" class="project-card-image" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
                 <div class="project-card-image-overlay">
                   <span class="project-card-overlay-btn"><i class="bi bi-box-arrow-up-right"></i> Live Demo</span>
                 </div>
@@ -401,7 +369,7 @@
           <div class="col-md-6 col-lg-4 project-item" data-category="ecommerce">
             <div class="project-card-editorial reveal-item delay-200">
               <div class="project-card-image-wrap" data-bs-toggle="modal" data-bs-target="#projectModal6" role="button" aria-label="View RY's Ribbon Studio flower shop">
-                <img src="images/project 6-thumb.webp" alt="RY's Ribbon Studio handmade flower bouquet shop" class="project-card-image btn-zoom-image" data-img-src="images/project 6.png" data-img-title="RY's Ribbon Studio" data-demo-url="https://github.com/webhubsaira" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
+                <img src="images/project 6-thumb.webp" alt="RY's Ribbon Studio handmade flower bouquet shop" class="project-card-image" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
                 <div class="project-card-image-overlay">
                   <span class="project-card-overlay-btn"><i class="bi bi-box-arrow-up-right"></i> Live Demo</span>
                 </div>
@@ -419,17 +387,6 @@
             </div>
           </div>
 
-          </div>
-        </div>
-
-        <div class="projects-controls" role="group" aria-label="Project carousel controls">
-          <span class="projects-status" id="projectsStatus" aria-live="polite">01 / 06</span>
-          <button type="button" class="projects-arrow" id="projectsPrev" aria-label="Previous project" disabled>
-            <i class="bi bi-arrow-left" aria-hidden="true"></i>
-          </button>
-          <button type="button" class="projects-arrow" id="projectsNext" aria-label="Next project">
-            <i class="bi bi-arrow-right" aria-hidden="true"></i>
-          </button>
         </div>
       </div>
     </section>
@@ -442,6 +399,52 @@
           <span class="hero-small-tag">WHAT I DELIVER</span>
           <h2 class="section-title">Design &amp; Development <span class="text-accent-blue">Services</span></h2>
           <p class="section-subtitle">Delivering robust, end-to-end digital engineering solutions from responsive frontends to relational database architectures.</p>
+        </div>
+
+        <div class="services-scroll-showcase row g-5">
+          <div class="col-lg-5">
+            <div class="services-scroll-heading">
+              <span class="hero-small-tag">SCROLL TO EXPLORE</span>
+              <h3>Design with purpose.<br /><span>Build for what’s next.</span></h3>
+              <p>From the first sketch to a reliable launch, every detail works together to make your digital product feel effortless.</p>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <div class="services-scroll-list" aria-label="Design and development capabilities">
+              <article class="services-scroll-item reveal-item">
+                <span class="services-scroll-index" aria-hidden="true">01</span>
+                <div>
+                  <h4>Interface Design</h4>
+                  <p>Clear, thoughtful interfaces that make your product easy and enjoyable to use.</p>
+                </div>
+                <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+              </article>
+              <article class="services-scroll-item reveal-item">
+                <span class="services-scroll-index" aria-hidden="true">02</span>
+                <div>
+                  <h4>Frontend Development</h4>
+                  <p>Responsive, accessible experiences built to work beautifully across devices.</p>
+                </div>
+                <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+              </article>
+              <article class="services-scroll-item reveal-item">
+                <span class="services-scroll-index" aria-hidden="true">03</span>
+                <div>
+                  <h4>Full Stack Engineering</h4>
+                  <p>Connected frontends, APIs, and databases shaped around your real needs.</p>
+                </div>
+                <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+              </article>
+              <article class="services-scroll-item reveal-item">
+                <span class="services-scroll-index" aria-hidden="true">04</span>
+                <div>
+                  <h4>Launch &amp; Optimization</h4>
+                  <p>Careful deployment and performance improvements that keep your product moving.</p>
+                </div>
+                <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+              </article>
+            </div>
+          </div>
         </div>
 
         <div class="row g-4">
@@ -754,7 +757,7 @@
                   <a href="https://github.com/webhubsaira" class="social-circle-btn" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" id="socialContactGithub">
                     <i class="bi bi-github"></i>
                   </a>
-                  <a href="https://linkedin.com/in/saira-naseem-a9a958408" class="social-circle-btn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" id="socialContactLinkedin">
+                  <a href="https://www.linkedin.com/in/saira-naseem-a9a958408" class="social-circle-btn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" id="socialContactLinkedin">
                     <i class="bi bi-linkedin"></i>
                   </a>
                   <a href="https://wa.me/+923328562755" class="social-circle-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Profile" id="socialContactWhatsapp">
@@ -781,6 +784,16 @@
                   <div>
                     <strong class="d-block">Message Sent Successfully!</strong>
                     <span>Thank you for reaching out. I will get back to you shortly.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="alert alert-danger d-none mb-4" id="formErrorAlert" role="alert">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-exclamation-triangle-fill fs-4 me-3 text-danger"></i>
+                  <div>
+                    <strong class="d-block">Unable to send your message.</strong>
+                    <span id="formErrorText">Please try again or reach out directly by email.</span>
                   </div>
                 </div>
               </div>
@@ -880,8 +893,7 @@
         <!-- Brand & Description -->
         <div class="col-lg-4">
           <a class="footer-brand d-flex align-items-center gap-2" href="#home">
-            <img class="navbar-brand-logo" src="images/logo.png" alt="" width="42" height="42" />
-            <span>WEBHUB<span class="text-accent-blue">-SAIRA</span></span>
+            <img class="navbar-brand-logo" src="images/logo.png" alt="Web dev logo" width="132" height="88" />
           </a>
           <p class="footer-text mt-3">
             Full Stack developer creating responsive, scalable web applications with clean architecture and modern development standards.
@@ -890,7 +902,7 @@
             <a href="https://github.com/webhubsaira/" class="social-circle-btn" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" id="footerGithub">
               <i class="bi bi-github"></i>
             </a>
-            <a href="https://linkedin.com/in/saira-naseem-a9a958408" class="social-circle-btn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" id="footerLinkedin">
+            <a href="https://www.linkedin.com/in/saira-naseem-a9a958408" class="social-circle-btn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" id="footerLinkedin">
               <i class="bi bi-linkedin"></i>
             </a>
             <a href="https://wa.me/+923328562755" class="social-circle-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Profile" id="footerWhatsapp">
@@ -959,7 +971,7 @@
     <i class="bi bi-arrow-up"></i>
   </button>
 
-  <!-- Project Modals with Full-Size Uncropped Previews -->
+  <!-- Project Detail Modals with Scrollable Screenshots -->
   <!-- Modal 1: Portfolio Demo -->
   <div class="modal fade" id="projectModal1" tabindex="-1" aria-labelledby="projectModal1Label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
@@ -981,15 +993,12 @@
               <div class="preview-address-bar">
                 <i class="bi bi-lock-fill text-success me-1"></i> https://webhubsaira.github.io/portfolio
               </div>
-              <button type="button" class="btn btn-sm btn-outline-light px-3 py-1 btn-zoom-image" data-img-src="images/project 1.png" data-img-title="Developer Portfolio" data-demo-url="https://webhubsaira.github.io/">
-                <i class="bi bi-arrows-fullscreen me-1"></i> Fullscreen View
-              </button>
             </div>
-            <div class="modal-full-image-viewport btn-zoom-image" data-img-src="images/project 1.png" data-img-title="Developer Portfolio" data-demo-url="https://webhubsaira.github.io/" title="Click to open fullscreen view">
+            <div class="modal-full-image-viewport">
               <img src="images/project 1.png" alt="Developer portfolio website screenshot" class="modal-full-image" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
             </div>
             <div class="preview-caption-bar">
-              <span><i class="bi bi-check2-circle text-success me-1"></i> Full project display shown completely. Click image or "Fullscreen View" to zoom.</span>
+              <span><i class="bi bi-check2-circle text-success me-1"></i> Scroll the preview to view the full page.</span>
               <span class="badge bg-secondary-subtle text-light border border-secondary-subtle">High Resolution</span>
             </div>
           </div>
@@ -1013,9 +1022,6 @@
         </div>
         <div class="modal-footer border-top border-secondary-subtle py-3 px-4">
           <button type="button" class="btn btn-secondary btn-sm px-3" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-outline-light btn-sm px-3 btn-zoom-image" data-img-src="images/project 1.png" data-img-title="Developer Portfolio" data-demo-url="https://webhubsaira.github.io/">
-            <i class="bi bi-zoom-in me-1"></i> Full Size
-          </button>
           <a href="https://webhubsaira.github.io/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm px-4">
             <i class="bi bi-box-arrow-up-right me-1"></i> Live Demo
           </a>
@@ -1045,15 +1051,12 @@
               <div class="preview-address-bar">
                 <i class="bi bi-shield-check text-info me-1"></i> https://tb-diagnostic-ai.app
               </div>
-              <button type="button" class="btn btn-sm btn-outline-light px-3 py-1 btn-zoom-image" data-img-src="images/project 2.png" data-img-title="TB Screening System" data-demo-url="https://github.com/webhubsaira">
-                <i class="bi bi-arrows-fullscreen me-1"></i> Fullscreen View
-              </button>
             </div>
-            <div class="modal-full-image-viewport btn-zoom-image" data-img-src="images/project 2.png" data-img-title="TB Screening System" data-demo-url="https://github.com/webhubsaira" title="Click to open fullscreen view">
+            <div class="modal-full-image-viewport">
               <img src="images/project 2.png" alt="TB screening portal with chest X-ray and cough analysis" class="modal-full-image" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
             </div>
             <div class="preview-caption-bar">
-              <span><i class="bi bi-check2-circle text-success me-1"></i> Full project display shown completely. Click image or "Fullscreen View" to zoom.</span>
+              <span><i class="bi bi-check2-circle text-success me-1"></i> Scroll the preview to view the full page.</span>
               <span class="badge bg-secondary-subtle text-light border border-secondary-subtle">High Resolution</span>
             </div>
           </div>
@@ -1077,9 +1080,6 @@
         </div>
         <div class="modal-footer border-top border-secondary-subtle py-3 px-4">
           <button type="button" class="btn btn-secondary btn-sm px-3" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-outline-light btn-sm px-3 btn-zoom-image" data-img-src="images/project 2.png" data-img-title="TB Screening System" data-demo-url="https://github.com/webhubsaira">
-            <i class="bi bi-zoom-in me-1"></i> Full Size
-          </button>
           <a href="https://github.com/webhubsaira" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm px-3">
             <i class="bi bi-github me-1"></i> Repository
           </a>
@@ -1110,17 +1110,14 @@
                 <span></span><span></span><span></span>
               </div>
               <div class="preview-address-bar">
-                <i class="bi bi-cloud-sun text-warning me-1"></i> https://skypulse-weather.web.app
+                <i class="bi bi-cloud-sun text-warning me-1"></i> https://snweatherweb.vercel.app/
               </div>
-              <button type="button" class="btn btn-sm btn-outline-light px-3 py-1 btn-zoom-image" data-img-src="images/project 3.png" data-img-title="WeatherNow Dashboard" data-demo-url="https://github.com/webhubsaira">
-                <i class="bi bi-arrows-fullscreen me-1"></i> Fullscreen View
-              </button>
             </div>
-            <div class="modal-full-image-viewport btn-zoom-image" data-img-src="images/project 3.png" data-img-title="WeatherNow Dashboard" data-demo-url="https://github.com/webhubsaira" title="Click to open fullscreen view">
+            <div class="modal-full-image-viewport">
               <img src="images/project 3.png" alt="WeatherNow dashboard with forecasts, air quality, and weather map" class="modal-full-image" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
             </div>
             <div class="preview-caption-bar">
-              <span><i class="bi bi-check2-circle text-success me-1"></i> Full project display shown completely. Click image or "Fullscreen View" to zoom.</span>
+              <span><i class="bi bi-check2-circle text-success me-1"></i> Scroll the preview to view the full page.</span>
               <span class="badge bg-secondary-subtle text-light border border-secondary-subtle">High Resolution</span>
             </div>
           </div>
@@ -1144,13 +1141,10 @@
         </div>
         <div class="modal-footer border-top border-secondary-subtle py-3 px-4">
           <button type="button" class="btn btn-secondary btn-sm px-3" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-outline-light btn-sm px-3 btn-zoom-image" data-img-src="images/project 3.png" data-img-title="WeatherNow Dashboard" data-demo-url="https://github.com/webhubsaira">
-            <i class="bi bi-zoom-in me-1"></i> Full Size
-          </button>
           <a href="https://github.com/webhubsaira" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm px-3">
             <i class="bi bi-github me-1"></i> Repository
           </a>
-          <a href="https://github.com/webhubsaira" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm px-4">
+          <a href="https://snweatherweb.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm px-4">
             <i class="bi bi-box-arrow-up-right me-1"></i> Live Demo
           </a>
         </div>
@@ -1177,17 +1171,14 @@
                 <span></span><span></span><span></span>
               </div>
               <div class="preview-address-bar">
-                <i class="bi bi-images text-primary me-1"></i> Image Gallery
+                <i class="bi bi-images text-primary me-1"></i> https://code-alpha-image-gallery-liart.vercel.app/
               </div>
-              <button type="button" class="btn btn-sm btn-outline-light px-3 py-1 btn-zoom-image" data-img-src="images/project 4.png" data-img-title="Image Gallery" data-demo-url="https://github.com/webhubsaira">
-                <i class="bi bi-arrows-fullscreen me-1"></i> Fullscreen View
-              </button>
             </div>
-            <div class="modal-full-image-viewport btn-zoom-image" data-img-src="images/project 4.png" data-img-title="Image Gallery" data-demo-url="https://github.com/webhubsaira" title="Click to open fullscreen view">
+            <div class="modal-full-image-viewport">
               <img src="images/project 4.png" alt="Image gallery with photo search, category filters, and favorites" class="modal-full-image" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
             </div>
             <div class="preview-caption-bar">
-              <span><i class="bi bi-check2-circle text-success me-1"></i> Full project display shown completely. Click image or "Fullscreen View" to zoom.</span>
+              <span><i class="bi bi-check2-circle text-success me-1"></i> Scroll the preview to view the full page.</span>
               <span class="badge bg-secondary-subtle text-light border border-secondary-subtle">High Resolution</span>
             </div>
           </div>
@@ -1211,13 +1202,10 @@
         </div>
         <div class="modal-footer border-top border-secondary-subtle py-3 px-4">
           <button type="button" class="btn btn-secondary btn-sm px-3" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-outline-light btn-sm px-3 btn-zoom-image" data-img-src="images/project 4.png" data-img-title="Image Gallery" data-demo-url="https://github.com/webhubsaira">
-            <i class="bi bi-zoom-in me-1"></i> Full Size
-          </button>
           <a href="https://github.com/webhubsaira" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm px-3">
             <i class="bi bi-github me-1"></i> Repository
           </a>
-          <a href="https://github.com/webhubsaira" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm px-4">
+          <a href="https://code-alpha-image-gallery-liart.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm px-4">
             <i class="bi bi-box-arrow-up-right me-1"></i> Live Demo
           </a>
         </div>
@@ -1246,15 +1234,12 @@
               <div class="preview-address-bar">
                 <i class="bi bi-gem text-success me-1"></i> Aurum &amp; Écrin Boutique
               </div>
-              <button type="button" class="btn btn-sm btn-outline-light px-3 py-1 btn-zoom-image" data-img-src="images/project 5.png" data-img-title="Aurum & Écrin Jewelry Boutique" data-demo-url="https://webhubsaira.github.io/">
-                <i class="bi bi-arrows-fullscreen me-1"></i> Fullscreen View
-              </button>
             </div>
-            <div class="modal-full-image-viewport btn-zoom-image" data-img-src="images/project 5.png" data-img-title="Aurum & Écrin Jewelry Boutique" data-demo-url="https://webhubsaira.github.io/" title="Click to open fullscreen view">
+            <div class="modal-full-image-viewport">
               <img src="images/project 5.png" alt="Aurum and Écrin luxury jewelry online boutique" class="modal-full-image" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
             </div>
             <div class="preview-caption-bar">
-              <span><i class="bi bi-check2-circle text-success me-1"></i> Full project display shown completely. Click image or "Fullscreen View" to zoom.</span>
+              <span><i class="bi bi-check2-circle text-success me-1"></i> Scroll the preview to view the full page.</span>
               <span class="badge bg-secondary-subtle text-light border border-secondary-subtle">High Resolution</span>
             </div>
           </div>
@@ -1278,9 +1263,6 @@
         </div>
         <div class="modal-footer border-top border-secondary-subtle py-3 px-4">
           <button type="button" class="btn btn-secondary btn-sm px-3" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-outline-light btn-sm px-3 btn-zoom-image" data-img-src="images/project 5.png" data-img-title="Aurum & Écrin Jewelry Boutique" data-demo-url="https://webhubsaira.github.io/">
-            <i class="bi bi-zoom-in me-1"></i> Full Size
-          </button>
           <a href="https://webhubsaira.github.io/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm px-4">
             <i class="bi bi-box-arrow-up-right me-1"></i> Live Demo
           </a>
@@ -1310,15 +1292,12 @@
               <div class="preview-address-bar">
                 <i class="bi bi-gift text-primary me-1"></i> RY's Ribbon Studio
               </div>
-              <button type="button" class="btn btn-sm btn-outline-light px-3 py-1 btn-zoom-image" data-img-src="images/project 6.png" data-img-title="RY's Ribbon Studio" data-demo-url="https://github.com/webhubsaira">
-                <i class="bi bi-arrows-fullscreen me-1"></i> Fullscreen View
-              </button>
             </div>
-            <div class="modal-full-image-viewport btn-zoom-image" data-img-src="images/project 6.png" data-img-title="RY's Ribbon Studio" data-demo-url="https://github.com/webhubsaira" title="Click to open fullscreen view">
+            <div class="modal-full-image-viewport">
               <img src="images/project 6.png" alt="RY's Ribbon Studio handmade flower bouquet shop" class="modal-full-image" loading="lazy" decoding="async" referrerPolicy="no-referrer" />
             </div>
             <div class="preview-caption-bar">
-              <span><i class="bi bi-check2-circle text-success me-1"></i> Full project display shown completely. Click image or "Fullscreen View" to zoom.</span>
+              <span><i class="bi bi-check2-circle text-success me-1"></i> Scroll the preview to view the full page.</span>
               <span class="badge bg-secondary-subtle text-light border border-secondary-subtle">High Resolution</span>
             </div>
           </div>
@@ -1342,45 +1321,12 @@
         </div>
         <div class="modal-footer border-top border-secondary-subtle py-3 px-4">
           <button type="button" class="btn btn-secondary btn-sm px-3" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-outline-light btn-sm px-3 btn-zoom-image" data-img-src="images/project 6.png" data-img-title="RY's Ribbon Studio" data-demo-url="https://github.com/webhubsaira">
-            <i class="bi bi-zoom-in me-1"></i> Full Size
-          </button>
           <a href="https://github.com/webhubsaira" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm px-3">
             <i class="bi bi-github me-1"></i> Repository
           </a>
           <a href="https://github.com/webhubsaira" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm px-4">
             <i class="bi bi-box-arrow-up-right me-1"></i> Live Demo
           </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Fullscreen Image Lightbox Modal -->
-  <div class="modal fade" id="imageLightboxModal" tabindex="-1" aria-labelledby="imageLightboxModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen">
-      <div class="modal-content border-0" style="background: rgba(5, 9, 20, 0.96) !important; backdrop-filter: blur(12px);">
-        <div class="modal-header border-0 py-3 px-4 d-flex justify-content-between align-items-center">
-          <div>
-            <span class="badge bg-primary-subtle text-primary px-3 py-1 mb-1">Full Screenshot View</span>
-            <h4 class="modal-title fs-5 fw-bold text-white mb-0" id="imageLightboxModalLabel">Project Preview</h4>
-          </div>
-          <div class="d-flex align-items-center gap-2">
-            <button type="button" class="btn btn-outline-light btn-sm px-3" id="lightboxZoomBtn" aria-label="Zoom image in" title="Zoom image in">
-              <i class="bi bi-zoom-in" id="lightboxZoomIcon"></i>
-            </button>
-            <a href="#" id="lightboxLiveDemoBtn" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm px-3">
-              <i class="bi bi-box-arrow-up-right me-1"></i> Live Demo
-            </a>
-            <button type="button" class="btn btn-outline-secondary btn-sm px-3" data-bs-dismiss="modal">
-              <i class="bi bi-x-lg me-1"></i> Close
-            </button>
-          </div>
-        </div>
-        <div class="modal-body p-2 p-md-4 d-flex align-items-center justify-content-center overflow-auto">
-          <div class="text-center w-100">
-            <img id="lightboxImage" src="" alt="Full Screen Project Preview" class="img-fluid rounded-3 shadow-lg" style="max-height: 85vh; width: auto; max-width: 100%; object-fit: contain; border: 1px solid rgba(255,255,255,0.12);" referrerPolicy="no-referrer" />
-          </div>
         </div>
       </div>
     </div>
