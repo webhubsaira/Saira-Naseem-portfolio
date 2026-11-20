@@ -2391,6 +2391,10 @@ select.form-control-custom {
     --bs-gutter-x: 1.5rem;
   }
 
+  .row.g-5 {
+    --bs-gutter-x: 1.5rem;
+  }
+
   .hero-section {
     padding-top: 132px;
   }
