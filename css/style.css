@@ -2961,19 +2961,10 @@ select.form-control-custom {
   gap: 32px;
 }
 
-.cta-banner .hero-small-tag {
-  color: var(--color-canvas-alt);
-}
-
 .cta-banner-title {
   color: var(--color-canvas);
   font-size: clamp(1.8rem, 4vw, 3rem);
   margin: 0 0 10px;
-}
-
-.cta-banner-text {
-  color: var(--color-canvas-alt);
-  margin: 0;
 }
 
 .cta-banner-button {
