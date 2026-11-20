@@ -2954,3 +2954,143 @@ select.form-control-custom {
     transition: none;
   }
 }
+
+/* Reference-inspired content layout; retain the existing palette. */
+.hero-section {
+  padding: clamp(120px, 15vw, 176px) 0 clamp(56px, 8vw, 96px);
+}
+
+.hero-image-frame {
+  width: min(100%, 370px);
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border-color: var(--color-accent-sky);
+  box-shadow: 0 0 0 8px rgba(200, 164, 159, 0.18), 0 18px 48px rgba(77, 14, 19, 0.18);
+}
+
+.hero-image {
+  border-radius: 50%;
+}
+
+.about-section {
+  padding-top: clamp(68px, 9vw, 104px);
+  padding-bottom: clamp(68px, 9vw, 104px);
+}
+
+.about-reference-portrait {
+  width: min(100%, 340px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  padding: 8px;
+  overflow: hidden;
+  border: 1px solid var(--color-accent-sky);
+  border-radius: 50%;
+  box-shadow: 0 0 0 8px rgba(200, 164, 159, 0.18), 0 18px 48px rgba(77, 14, 19, 0.14);
+}
+
+.about-reference-portrait img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.about-section .about-content {
+  text-align: left;
+}
+
+.about-section .about-gradient-heading {
+  font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+  margin-bottom: 1rem;
+}
+
+.skills-section .skill-category-card {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--color-editorial-border);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 22px 10px;
+}
+
+.skills-section .skill-category-card:hover {
+  background: rgba(200, 164, 159, 0.1);
+  box-shadow: none;
+  transform: none;
+}
+
+.skills-section .skill-category-header {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.skills-section .skill-badge-wrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px 18px;
+}
+
+.skills-section .skill-tag-badge {
+  padding: 4px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-primary);
+}
+
+.skills-section .skill-tag-badge i {
+  display: none;
+}
+
+.skills-section .skill-tag-badge::before {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: var(--color-accent-sky);
+  content: "";
+}
+
+.contact-section .row.align-items-stretch {
+  flex-direction: column;
+  align-items: center !important;
+}
+
+.contact-section .row.align-items-stretch > .col-lg-5,
+.contact-section .row.align-items-stretch > .col-lg-7 {
+  flex: 0 0 auto;
+  width: min(100%, 760px);
+}
+
+.contact-section .row.align-items-stretch > .col-lg-7 {
+  order: 1;
+}
+
+.contact-section .row.align-items-stretch > .col-lg-5 {
+  order: 2;
+}
+
+@media (max-width: 767.98px) {
+  .hero-image-wrapper {
+    min-height: 0;
+    padding: 20px 0;
+  }
+
+  .hero-image-frame {
+    width: min(78vw, 320px);
+  }
+
+  .about-section .about-content {
+    text-align: center;
+  }
+
+  .about-section .about-content > .d-flex {
+    justify-content: center;
+  }
+
+  .skills-section .skill-category-card {
+    padding: 18px 4px;
+  }
+}
