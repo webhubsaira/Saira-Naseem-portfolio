@@ -853,7 +853,7 @@ a:hover {
 }
 
 .services-scroll-showcase {
-  margin-bottom: 88px;
+  margin: 88px 0 0;
 }
 
 .services-scroll-heading {
@@ -2434,7 +2434,7 @@ select.form-control-custom {
 
 @media (max-width: 767.98px) {
   .services-scroll-showcase {
-    margin-bottom: 60px;
+    margin: 56px 0 0;
   }
 
   .services-scroll-heading {
@@ -2603,7 +2603,7 @@ select.form-control-custom {
   }
 
   .services-scroll-showcase {
-    margin-bottom: 64px;
+    margin: 56px 0 0;
   }
 
   .services-scroll-heading {
