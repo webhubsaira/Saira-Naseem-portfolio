@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const projectItems = document.querySelectorAll('.project-item');
   const revealElements = document.querySelectorAll('.reveal-item');
   const sectionElements = document.querySelectorAll('.section-reveal');
+  const aboutSection = document.getElementById('about');
+  const statNumbers = document.querySelectorAll('#about .stat-number');
+  const experienceSection = document.getElementById('experience');
+  const timelineContainer = document.querySelector('.timeline-container');
 
   // 1. Dynamic Copyright Year
   if (currentYearSpan) {
@@ -87,10 +91,20 @@ document.addEventListener('DOMContentLoaded', () => {
         projectItems.forEach(item => {
           const categories = (item.getAttribute('data-category') || '').split(' ');
           if (filterValue === 'all' || categories.includes(filterValue)) {
+            item.classList.remove('project-filter-exit');
+            item.classList.add('project-filter-enter');
             item.style.display = '';
-            item.classList.add('revealed');
+            requestAnimationFrame(() => {
+              item.classList.remove('project-filter-enter');
+              item.classList.add('revealed');
+            });
           } else {
-            item.style.display = 'none';
+            item.classList.add('project-filter-exit');
+            window.setTimeout(() => {
+              if (item.classList.contains('project-filter-exit')) {
+                item.style.display = 'none';
+              }
+            }, 320);
           }
         });
 
@@ -122,14 +136,114 @@ document.addEventListener('DOMContentLoaded', () => {
     sectionElements.forEach(el => el.classList.add('revealed'));
   }
 
+  // 6b. About Section Staggered Content and Stat Counters
+  const animateStatCounters = () => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      statNumbers.forEach(number => {
+        number.textContent = `${number.dataset.count}${number.dataset.suffix || ''}`;
+      });
+      return;
+    }
+
+    statNumbers.forEach((number, index) => {
+      const target = Number(number.dataset.count || 0);
+      const suffix = number.dataset.suffix || '';
+      const duration = 1200;
+      const startTime = performance.now() + (index * 180);
+
+      const updateCounter = (currentTime) => {
+        if (currentTime < startTime) {
+          requestAnimationFrame(updateCounter);
+          return;
+        }
+
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easedProgress = 1 - Math.pow(1 - progress, 3);
+        number.textContent = `${Math.round(target * easedProgress)}${suffix}`;
+
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        }
+      };
+
+      requestAnimationFrame(updateCounter);
+    });
+  };
+
+  if (aboutSection && statNumbers.length > 0) {
+    if ('IntersectionObserver' in window) {
+      const aboutObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            aboutSection.querySelectorAll('.about-gradient-heading, .about-description, .stat-item')
+              .forEach((element, index) => {
+                window.setTimeout(() => element.classList.add('about-revealed'), index * 120);
+              });
+            animateStatCounters();
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18 });
+
+      aboutObserver.observe(aboutSection);
+    } else {
+      aboutSection.querySelectorAll('.about-gradient-heading, .about-description, .stat-item')
+        .forEach(element => element.classList.add('about-revealed'));
+      animateStatCounters();
+    }
+  }
+
+  // 6c. Experience Timeline Draw and Entry
+  if (experienceSection && timelineContainer) {
+    const updateTimeline = () => {
+      const rect = experienceSection.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const progress = Math.min(
+        1,
+        Math.max(0, (viewportHeight - rect.top) / (viewportHeight + rect.height * 0.65))
+      );
+
+      timelineContainer.style.setProperty(
+        '--timeline-progress',
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches ? '1' : progress.toFixed(3)
+      );
+
+      if (progress > 0.08) {
+        experienceSection.classList.add('timeline-active');
+      }
+    };
+
+    if ('IntersectionObserver' in window) {
+      const timelineObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            experienceSection.classList.add('timeline-active');
+            window.addEventListener('scroll', updateTimeline, { passive: true });
+            updateTimeline();
+          } else {
+            window.removeEventListener('scroll', updateTimeline);
+          }
+        });
+      }, { threshold: 0.08 });
+
+      timelineObserver.observe(experienceSection);
+    } else {
+      experienceSection.classList.add('timeline-active');
+      updateTimeline();
+    }
+  }
+
   // 7. Contact Form with Web3Forms AJAX
   const showFormMessage = (type, message) => {
     if (formSuccessAlert) {
       formSuccessAlert.classList.toggle('d-none', type !== 'success');
+      formSuccessAlert.classList.toggle('form-alert-visible', type === 'success');
     }
 
     if (formErrorAlert) {
       formErrorAlert.classList.toggle('d-none', type !== 'error');
+      formErrorAlert.classList.toggle('form-alert-visible', type === 'error');
     }
 
     if (formErrorText && type === 'error') {
@@ -154,7 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       contactForm.classList.add('was-validated');
-      showFormMessage('success', '');
 
       const submitBtn = document.getElementById('contactSubmitBtn');
       const originalBtnText = submitBtn ? submitBtn.innerHTML : 'SEND MESSAGE';
