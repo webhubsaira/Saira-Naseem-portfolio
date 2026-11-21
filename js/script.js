@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const filterBtns = document.querySelectorAll('.filter-btn');
   const projectItems = document.querySelectorAll('.project-item');
   const revealElements = document.querySelectorAll('.reveal-item');
+  const sectionElements = document.querySelectorAll('.section-reveal');
 
   // 1. Dynamic Copyright Year
   if (currentYearSpan) {
@@ -98,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 6. Reveal Elements on Scroll
-  if ('IntersectionObserver' in window && revealElements.length > 0) {
+  if ('IntersectionObserver' in window && (revealElements.length > 0 || sectionElements.length > 0)) {
     document.body.classList.add('reveal-enabled');
     const revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
@@ -114,9 +115,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     revealElements.forEach(el => revealObserver.observe(el));
+    sectionElements.forEach(el => revealObserver.observe(el));
   } else {
     // Fallback if observer not supported
     revealElements.forEach(el => el.classList.add('revealed'));
+    sectionElements.forEach(el => el.classList.add('revealed'));
   }
 
   // 7. Contact Form with Web3Forms AJAX

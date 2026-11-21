@@ -1437,6 +1437,21 @@ a:hover {
   transform: none;
 }
 
+.reveal-enabled .section-reveal {
+  transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.reveal-enabled .section-reveal:not(.revealed) {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.reveal-enabled .section-reveal.revealed {
+  opacity: 1;
+  transform: none;
+}
+
 .delay-100 { transition-delay: 100ms; }
 .delay-200 { transition-delay: 200ms; }
 .delay-300 { transition-delay: 300ms; }
@@ -1449,6 +1464,13 @@ a:hover {
 @media (prefers-reduced-motion: reduce) {
   .reveal-enabled .reveal-item,
   .reveal-enabled .reveal-item:not(.revealed) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .reveal-enabled .section-reveal,
+  .reveal-enabled .section-reveal:not(.revealed) {
     opacity: 1;
     transform: none;
     transition: none;
@@ -2830,6 +2852,12 @@ select.form-control-custom {
 
 @media (prefers-reduced-motion: reduce) {
   html body.reveal-enabled .reveal-item:not(.revealed) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  html body.reveal-enabled .section-reveal:not(.revealed) {
     opacity: 1;
     transform: none;
     transition: none;
