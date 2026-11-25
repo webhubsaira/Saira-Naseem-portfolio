@@ -1,315 +1,443 @@
 /**
- * Saira Naseem | Full Stack Web Developer Portfolio
+ * Saira Naseem — Personal Developer Portfolio
  * Script: js/script.js
- * Vanilla JavaScript (ES6+)
+ * Pure ES6+ Vanilla JavaScript
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+const initPortfolio = () => {
   'use strict';
 
-  // DOM Elements
-  const navbar = document.getElementById('mainNavbar');
-  const navLinks = document.querySelectorAll('.nav-link');
-  const navbarCollapse = document.getElementById('navbarResponsive');
-  const backToTopBtn = document.getElementById('backToTopBtn');
-  const currentYearSpan = document.getElementById('currentYear');
+  /* ========================================================================
+     1. Dynamic Copyright Year
+     ======================================================================== */
+  const currentYearEl = document.getElementById('currentYear');
+  if (currentYearEl) {
+    currentYearEl.textContent = String(new Date().getFullYear());
+  }
+
+  /* ========================================================================
+     2. Sticky Header & Mobile Navigation Drawer
+     ======================================================================== */
+  const siteHeader = document.getElementById('siteHeader');
+  const navToggle = document.getElementById('navToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link, .mobile-contact-btn');
+
+  const updateHeaderScroll = () => {
+    if (!siteHeader) return;
+    siteHeader.classList.toggle('scrolled', window.scrollY > 24);
+  };
+
+  window.addEventListener('scroll', updateHeaderScroll, { passive: true });
+  updateHeaderScroll();
+
+  const closeMobileMenu = () => {
+    if (!navToggle || !mobileMenu) return;
+    navToggle.setAttribute('aria-expanded', 'false');
+    mobileMenu.hidden = true;
+  };
+
+  if (navToggle && mobileMenu) {
+    navToggle.addEventListener('click', () => {
+      const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+      navToggle.setAttribute('aria-expanded', String(!isExpanded));
+      mobileMenu.hidden = isExpanded;
+    });
+
+    mobileNavLinks.forEach((link) => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768) {
+        closeMobileMenu();
+      }
+    });
+  }
+
+  /* ========================================================================
+     3. Active Section Highlighting in Navigation
+     ======================================================================== */
+  const navLinks = Array.from(document.querySelectorAll('.site-nav .nav-link'));
+  const trackedSections = navLinks
+    .map((link) => {
+      const id = link.getAttribute('href')?.replace('#', '');
+      return id ? document.getElementById(id) : null;
+    })
+    .filter(Boolean);
+
+  if ('IntersectionObserver' in window && trackedSections.length > 0) {
+    const navObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const activeId = entry.target.id;
+            navLinks.forEach((link) => {
+              const matches = link.getAttribute('href') === `#${activeId}`;
+              link.classList.toggle('active', matches);
+            });
+          }
+        });
+      },
+      { rootMargin: '-35% 0px -55% 0px', threshold: 0 }
+    );
+
+    trackedSections.forEach((section) => navObserver.observe(section));
+  }
+
+  /* ========================================================================
+     4. Interactive Skills Category Filter
+     ======================================================================== */
+  const skillChips = Array.from(document.querySelectorAll('.skill-chip'));
+  const stackItems = Array.from(document.querySelectorAll('#workStackGrid .stack-item'));
+  let activeSkillFilter = null;
+
+  const applySkillFilter = (filterKey) => {
+    activeSkillFilter = activeSkillFilter === filterKey ? null : filterKey;
+
+    skillChips.forEach((chip) => {
+      const isMatch = chip.dataset.skillFilter === activeSkillFilter;
+      chip.classList.toggle('active', isMatch);
+      chip.setAttribute('aria-pressed', String(isMatch));
+    });
+
+    stackItems.forEach((item) => {
+      if (!activeSkillFilter) {
+        item.classList.remove('is-dimmed', 'is-highlighted');
+        return;
+      }
+      const categories = (item.dataset.cat || '').split(/\s+/);
+      const matches = categories.includes(activeSkillFilter);
+      item.classList.toggle('is-highlighted', matches);
+      item.classList.toggle('is-dimmed', !matches);
+    });
+  };
+
+  skillChips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      applySkillFilter(chip.dataset.skillFilter || null);
+    });
+  });
+
+  /* ========================================================================
+     5. Interactive Projects Showcase Carousel & Full-Preview Lightbox
+     ======================================================================== */
+  const thumbButtons = Array.from(document.querySelectorAll('.project-thumb'));
+  const tabletImg = document.getElementById('projectTabletImg');
+  const phoneImg = document.getElementById('projectPhoneImg');
+  const detailsRow = document.getElementById('projectDetailsRow');
+  const projectTitle = document.getElementById('projectTitle');
+  const projectMetric1 = document.getElementById('projectMetric1');
+  const projectMetric2 = document.getElementById('projectMetric2');
+  const projectLiveLink = document.getElementById('projectLiveLink');
+  const projectCodeLink = document.getElementById('projectCodeLink');
+  const projectDescription = document.getElementById('projectDescription');
+  const prevBtn = document.getElementById('projectPrevBtn');
+  const nextBtn = document.getElementById('projectNextBtn');
+
+  // Lightbox elements
+  const lightbox = document.getElementById('projectLightbox');
+  const lightboxBackdrop = document.getElementById('lightboxBackdrop');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxTitle = document.getElementById('lightboxTitle');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const openLightboxTrigger = document.getElementById('openLightboxTrigger');
+  const projectPreviewBtn = document.getElementById('projectPreviewBtn');
+
+  let currentProjectIndex = 0;
+  let swapTimeoutId = null;
+
+  const getThumbImageSrc = (btn) => {
+    const img = btn.querySelector('img');
+    return img ? img.currentSrc || img.src || img.getAttribute('src') || '' : '';
+  };
+
+  const renderProject = (index, animate = true) => {
+    if (thumbButtons.length === 0) return;
+
+    const total = thumbButtons.length;
+    currentProjectIndex = ((index % total) + total) % total;
+    const activeBtn = thumbButtons[currentProjectIndex];
+
+    thumbButtons.forEach((btn, idx) => {
+      const isActive = idx === currentProjectIndex;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-selected', String(isActive));
+    });
+
+    const imgSrc = getThumbImageSrc(activeBtn);
+    const title = activeBtn.dataset.title || '';
+    const metric1Bold = activeBtn.dataset.metric1Bold || '';
+    const metric1Rest = activeBtn.dataset.metric1Rest || '';
+    const metric2Bold = activeBtn.dataset.metric2Bold || '';
+    const metric2Rest = activeBtn.dataset.metric2Rest || '';
+    const liveUrl = activeBtn.dataset.live || '#';
+    const codeUrl = activeBtn.dataset.code || '#';
+    const desc = activeBtn.dataset.desc || '';
+    const tabletPos = activeBtn.dataset.tabletPos || 'center top';
+    const phonePos = activeBtn.dataset.phonePos || 'center top';
+
+    const applyContent = () => {
+      if (tabletImg) {
+        tabletImg.src = imgSrc;
+        tabletImg.alt = `${title} desktop preview`;
+        tabletImg.style.objectPosition = tabletPos;
+      }
+      if (phoneImg) {
+        phoneImg.src = imgSrc;
+        phoneImg.style.objectPosition = phonePos;
+      }
+      if (projectTitle) projectTitle.textContent = title;
+      if (projectMetric1) {
+        projectMetric1.innerHTML = '';
+        const strong = document.createElement('strong');
+        strong.textContent = metric1Bold;
+        projectMetric1.appendChild(strong);
+        projectMetric1.appendChild(document.createTextNode(` ${metric1Rest}`));
+      }
+      if (projectMetric2) {
+        projectMetric2.innerHTML = '';
+        const strong = document.createElement('strong');
+        strong.textContent = metric2Bold;
+        projectMetric2.appendChild(strong);
+        projectMetric2.appendChild(document.createTextNode(` ${metric2Rest}`));
+      }
+      if (projectLiveLink) projectLiveLink.href = liveUrl;
+      if (projectCodeLink) projectCodeLink.href = codeUrl;
+      if (projectDescription) projectDescription.textContent = desc;
+    };
+
+    if (!animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      applyContent();
+      return;
+    }
+
+    window.clearTimeout(swapTimeoutId);
+    tabletImg?.classList.add('is-swapping');
+    phoneImg?.classList.add('is-swapping');
+    detailsRow?.classList.add('is-swapping');
+
+    swapTimeoutId = window.setTimeout(() => {
+      applyContent();
+      requestAnimationFrame(() => {
+        tabletImg?.classList.remove('is-swapping');
+        phoneImg?.classList.remove('is-swapping');
+        detailsRow?.classList.remove('is-swapping');
+      });
+    }, 140);
+  };
+
+  thumbButtons.forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+      if (idx !== currentProjectIndex) {
+        renderProject(idx, true);
+      }
+    });
+  });
+
+  prevBtn?.addEventListener('click', () => {
+    renderProject(currentProjectIndex - 1, true);
+  });
+
+  nextBtn?.addEventListener('click', () => {
+    renderProject(currentProjectIndex + 1, true);
+  });
+
+  // Keyboard navigation on thumbnail strip
+  const thumbsTray = document.querySelector('.project-thumbs-tray');
+  thumbsTray?.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      renderProject(currentProjectIndex + 1, true);
+      thumbButtons[currentProjectIndex]?.focus();
+    } else if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      renderProject(currentProjectIndex - 1, true);
+      thumbButtons[currentProjectIndex]?.focus();
+    }
+  });
+
+  // Initial sync without animation
+  renderProject(0, false);
+
+  // Full-screenshot Lightbox Modal
+  const openLightbox = () => {
+    if (!lightbox || !lightboxImg) return;
+    const activeBtn = thumbButtons[currentProjectIndex];
+    if (!activeBtn) return;
+
+    const fullImgSrc = getThumbImageSrc(activeBtn);
+    const title = activeBtn.dataset.title || 'Project Preview';
+
+    lightboxImg.src = fullImgSrc;
+    lightboxImg.alt = `${title} full page screenshot`;
+    if (lightboxTitle) lightboxTitle.textContent = title;
+
+    const body = lightbox.querySelector('.lightbox-body');
+    if (body) body.scrollTop = 0;
+
+    lightbox.hidden = false;
+    document.body.style.overflow = 'hidden';
+    lightboxClose?.focus();
+  };
+
+  const closeLightbox = () => {
+    if (!lightbox || lightbox.hidden) return;
+    lightbox.hidden = true;
+    document.body.style.overflow = '';
+  };
+
+  openLightboxTrigger?.addEventListener('click', openLightbox);
+  openLightboxTrigger?.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openLightbox();
+    }
+  });
+  projectPreviewBtn?.addEventListener('click', openLightbox);
+  lightboxClose?.addEventListener('click', closeLightbox);
+  lightboxBackdrop?.addEventListener('click', closeLightbox);
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeLightbox();
+      closeMobileMenu();
+    }
+  });
+
+  /* ========================================================================
+     6. Contact Form Quick-Intent Chips & Web3Forms AJAX Submission
+     ======================================================================== */
+  const intentChips = Array.from(document.querySelectorAll('.intent-chip'));
+  const subjectInput = document.getElementById('contactSubjectInput');
   const contactForm = document.getElementById('portfolioContactForm');
   const formSuccessAlert = document.getElementById('formSuccessAlert');
   const formErrorAlert = document.getElementById('formErrorAlert');
   const formErrorText = document.getElementById('formErrorText');
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const projectItems = document.querySelectorAll('.project-item');
-  const revealElements = document.querySelectorAll('.reveal-item');
-  const sectionElements = document.querySelectorAll('.section-reveal');
-  const aboutSection = document.getElementById('about');
-  const statNumbers = document.querySelectorAll('#about .stat-number');
-  const experienceSection = document.getElementById('experience');
-  const timelineContainer = document.querySelector('.timeline-container');
+  const submitBtn = document.getElementById('contactSubmitBtn');
 
-  // 1. Dynamic Copyright Year
-  if (currentYearSpan) {
-    currentYearSpan.textContent = new Date().getFullYear();
-  }
+  intentChips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const wasActive = chip.classList.contains('active');
+      intentChips.forEach((c) => {
+        c.classList.remove('active');
+        c.setAttribute('aria-pressed', 'false');
+      });
 
-  // 2. Sticky Navbar on Scroll
-  const handleScroll = () => {
-    const scrollY = window.scrollY || window.pageYOffset;
-
-    if (navbar) {
-      if (scrollY > 40) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
+      if (!wasActive) {
+        chip.classList.add('active');
+        chip.setAttribute('aria-pressed', 'true');
+        if (subjectInput) {
+          subjectInput.value = chip.dataset.intent || 'Portfolio Inquiry';
+        }
+      } else if (subjectInput) {
+        subjectInput.value = 'Portfolio Inquiry';
       }
-    }
-
-    if (backToTopBtn) {
-      if (scrollY > 350) {
-        backToTopBtn.classList.add('visible');
-      } else {
-        backToTopBtn.classList.remove('visible');
-      }
-    }
-  };
-
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  handleScroll();
-
-  // 3. Scroll to Top
-  if (backToTopBtn) {
-    backToTopBtn.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
     });
-  }
+  });
 
-  // 4. Auto-collapse mobile navigation on click
-  if (navbarCollapse) {
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        if (window.innerWidth < 992 && navbarCollapse.classList.contains('show')) {
-          const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
-          if (bsCollapse) {
-            bsCollapse.hide();
-          }
-        }
-      });
-    });
-  }
-
-  // 5. Project Category Filtering
-  if (filterBtns.length > 0 && projectItems.length > 0) {
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const filterValue = btn.getAttribute('data-filter') || 'all';
-
-        projectItems.forEach(item => {
-          const categories = (item.getAttribute('data-category') || '').split(' ');
-          if (filterValue === 'all' || categories.includes(filterValue)) {
-            item.classList.remove('project-filter-exit');
-            item.classList.add('project-filter-enter');
-            item.style.display = '';
-            requestAnimationFrame(() => {
-              item.classList.remove('project-filter-enter');
-              item.classList.add('revealed');
-            });
-          } else {
-            item.classList.add('project-filter-exit');
-            window.setTimeout(() => {
-              if (item.classList.contains('project-filter-exit')) {
-                item.style.display = 'none';
-              }
-            }, 320);
-          }
-        });
-
-      });
-    });
-  }
-
-  // 6. Reveal Elements on Scroll
-  if ('IntersectionObserver' in window && (revealElements.length > 0 || sectionElements.length > 0)) {
-    document.body.classList.add('reveal-enabled');
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      root: null,
-      threshold: 0.12,
-      rootMargin: '0px 0px -40px 0px'
-    });
-
-    revealElements.forEach(el => revealObserver.observe(el));
-    sectionElements.forEach(el => revealObserver.observe(el));
-  } else {
-    // Fallback if observer not supported
-    revealElements.forEach(el => el.classList.add('revealed'));
-    sectionElements.forEach(el => el.classList.add('revealed'));
-  }
-
-  // 6b. About Section Staggered Content and Stat Counters
-  const animateStatCounters = () => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      statNumbers.forEach(number => {
-        number.textContent = `${number.dataset.count}${number.dataset.suffix || ''}`;
-      });
-      return;
-    }
-
-    statNumbers.forEach((number, index) => {
-      const target = Number(number.dataset.count || 0);
-      const suffix = number.dataset.suffix || '';
-      const duration = 1200;
-      const startTime = performance.now() + (index * 180);
-
-      const updateCounter = (currentTime) => {
-        if (currentTime < startTime) {
-          requestAnimationFrame(updateCounter);
-          return;
-        }
-
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easedProgress = 1 - Math.pow(1 - progress, 3);
-        number.textContent = `${Math.round(target * easedProgress)}${suffix}`;
-
-        if (progress < 1) {
-          requestAnimationFrame(updateCounter);
-        }
-      };
-
-      requestAnimationFrame(updateCounter);
-    });
-  };
-
-  if (aboutSection && statNumbers.length > 0) {
-    if ('IntersectionObserver' in window) {
-      const aboutObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            aboutSection.querySelectorAll('.about-gradient-heading, .about-description, .stat-item')
-              .forEach((element, index) => {
-                window.setTimeout(() => element.classList.add('about-revealed'), index * 120);
-              });
-            animateStatCounters();
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.18 });
-
-      aboutObserver.observe(aboutSection);
-    } else {
-      aboutSection.querySelectorAll('.about-gradient-heading, .about-description, .stat-item')
-        .forEach(element => element.classList.add('about-revealed'));
-      animateStatCounters();
-    }
-  }
-
-  // 6c. Experience Timeline Draw and Entry
-  if (experienceSection && timelineContainer) {
-    const updateTimeline = () => {
-      const rect = experienceSection.getBoundingClientRect();
-      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-      const progress = Math.min(
-        1,
-        Math.max(0, (viewportHeight - rect.top) / (viewportHeight + rect.height * 0.65))
-      );
-
-      timelineContainer.style.setProperty(
-        '--timeline-progress',
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches ? '1' : progress.toFixed(3)
-      );
-
-      if (progress > 0.08) {
-        experienceSection.classList.add('timeline-active');
-      }
-    };
-
-    if ('IntersectionObserver' in window) {
-      const timelineObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            experienceSection.classList.add('timeline-active');
-            window.addEventListener('scroll', updateTimeline, { passive: true });
-            updateTimeline();
-          } else {
-            window.removeEventListener('scroll', updateTimeline);
-          }
-        });
-      }, { threshold: 0.08 });
-
-      timelineObserver.observe(experienceSection);
-    } else {
-      experienceSection.classList.add('timeline-active');
-      updateTimeline();
-    }
-  }
-
-  // 7. Contact Form with Web3Forms AJAX
-  const showFormMessage = (type, message) => {
-    if (formSuccessAlert) {
-      formSuccessAlert.classList.toggle('d-none', type !== 'success');
-      formSuccessAlert.classList.toggle('form-alert-visible', type === 'success');
-    }
-
-    if (formErrorAlert) {
-      formErrorAlert.classList.toggle('d-none', type !== 'error');
-      formErrorAlert.classList.toggle('form-alert-visible', type === 'error');
-    }
-
-    if (formErrorText && type === 'error') {
+  const showAlert = (type, message) => {
+    if (formSuccessAlert) formSuccessAlert.hidden = type !== 'success';
+    if (formErrorAlert) formErrorAlert.hidden = type !== 'error';
+    if (formErrorText && type === 'error' && message) {
       formErrorText.textContent = message;
-    }
-
-    const alertToFocus = type === 'success' ? formSuccessAlert : formErrorAlert;
-    if (alertToFocus) {
-      alertToFocus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   };
 
   if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    const inputs = Array.from(contactForm.querySelectorAll('.form-input, .form-textarea'));
+    inputs.forEach((input) => {
+      input.addEventListener('input', () => {
+        input.classList.remove('is-invalid');
+      });
+    });
 
-      if (!contactForm.checkValidity()) {
-        e.stopPropagation();
-        contactForm.classList.add('was-validated');
-        showFormMessage('error', 'Please complete all required fields before sending your message.');
+    contactForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      showAlert('none');
+
+      let isValid = true;
+      inputs.forEach((input) => {
+        const value = input.value.trim();
+        const emailInvalid =
+          input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        if (!value || emailInvalid) {
+          input.classList.add('is-invalid');
+          isValid = false;
+        }
+      });
+
+      if (!isValid) {
+        showAlert('error', 'Please fill in your name, a valid email address, and your message.');
         return;
       }
 
-      contactForm.classList.add('was-validated');
+      const btnLabel = submitBtn?.querySelector('.btn-label');
+      const originalLabel = btnLabel ? btnLabel.textContent : 'Send Message';
 
-      const submitBtn = document.getElementById('contactSubmitBtn');
-      const originalBtnText = submitBtn ? submitBtn.innerHTML : 'SEND MESSAGE';
-
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Sending...';
-      }
-
-      const formData = new FormData(contactForm);
+      if (submitBtn) submitBtn.disabled = true;
+      if (btnLabel) btnLabel.textContent = 'Sending...';
 
       try {
+        const formData = new FormData(contactForm);
         const response = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
-          body: formData
+          body: formData,
         });
-
         const data = await response.json();
 
         if (data.success) {
-          if (formSuccessAlert) {
-            formSuccessAlert.classList.remove('d-none');
-            formSuccessAlert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
+          showAlert('success');
           contactForm.reset();
-          contactForm.classList.remove('was-validated');
-          if (formErrorAlert) {
-            formErrorAlert.classList.add('d-none');
-          }
+          intentChips.forEach((c) => {
+            c.classList.remove('active');
+            c.setAttribute('aria-pressed', 'false');
+          });
+          if (subjectInput) subjectInput.value = 'Portfolio Inquiry';
         } else {
-          showFormMessage('error', data.message || 'Something went wrong. Please try again.');
+          showAlert('error', data.message || 'Something went wrong. Please try again.');
         }
-      } catch (error) {
-        console.error('Contact form error:', error);
-        showFormMessage('error', 'Network error occurred. Please reach out directly to sairanaseem606729@gmail.com');
+      } catch (err) {
+        console.error('Contact form error:', err);
+        showAlert(
+          'error',
+          'Network error occurred. Please reach out directly at sairanaseem606729@gmail.com'
+        );
       } finally {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalBtnText;
-        }
+        if (submitBtn) submitBtn.disabled = false;
+        if (btnLabel) btnLabel.textContent = originalLabel;
       }
     });
   }
 
-});
+  /* ========================================================================
+     7. Scroll Reveal Animations
+     ======================================================================== */
+  const revealEls = Array.from(document.querySelectorAll('.reveal'));
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!prefersReducedMotion && 'IntersectionObserver' in window && revealEls.length > 0) {
+    document.body.classList.add('reveal-ready');
+    const revealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -30px 0px' }
+    );
+
+    revealEls.forEach((el) => revealObserver.observe(el));
+  } else {
+    revealEls.forEach((el) => el.classList.add('is-visible'));
+  }
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPortfolio);
+} else {
+  initPortfolio();
+}
