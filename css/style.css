@@ -912,6 +912,328 @@ ol {
   border-top: 1px solid var(--border-subtle);
 }
 
+.about-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Animated Editorial Portrait Showcase */
+.about-portrait-stage {
+  position: relative;
+  width: 100%;
+  max-width: 286px;
+}
+
+.about-portrait-float {
+  position: relative;
+  perspective: 960px;
+  animation: about-portrait-float 6.4s ease-in-out infinite;
+  will-change: transform;
+}
+
+.about-portrait-stage:hover .about-portrait-float {
+  animation-play-state: paused;
+}
+
+.about-portrait-aura {
+  position: absolute;
+  inset: -14px;
+  border-radius: 32px;
+  background: radial-gradient(
+    circle at 32% 24%,
+    rgba(255, 77, 141, 0.32) 0%,
+    rgba(192, 75, 255, 0.24) 44%,
+    rgba(99, 102, 241, 0.16) 72%,
+    transparent 88%
+  );
+  filter: blur(22px);
+  opacity: 0.72;
+  z-index: 0;
+  pointer-events: none;
+  animation: about-aura-pulse 5.2s ease-in-out infinite;
+  transition: opacity var(--t-med), transform var(--t-med);
+}
+
+.about-portrait-stage:hover .about-portrait-aura {
+  opacity: 0.98;
+  transform: scale(1.06);
+}
+
+.about-portrait-card {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --glare-x: 50%;
+  --glare-y: 35%;
+  --glare-opacity: 0;
+  position: relative;
+  z-index: 1;
+  border-radius: 24px;
+  padding: 2.5px;
+  transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform-style: preserve-3d;
+  box-shadow:
+    0 24px 54px rgba(0, 0, 0, 0.56),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+  transition: box-shadow var(--t-med);
+  will-change: transform;
+}
+
+.about-portrait-stage:hover .about-portrait-card {
+  box-shadow:
+    0 30px 66px rgba(0, 0, 0, 0.68),
+    0 0 34px rgba(192, 75, 255, 0.28);
+}
+
+/* Rotating Conic Aurora Border Ring */
+.about-portrait-halo {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.about-portrait-halo::before {
+  content: '';
+  position: absolute;
+  inset: -65%;
+  background: conic-gradient(
+    from 0deg,
+    #ff4d8d 0deg,
+    #c04bff 95deg,
+    #6366f1 185deg,
+    rgba(255, 255, 255, 0.08) 245deg,
+    rgba(255, 77, 141, 0.14) 305deg,
+    #ff4d8d 360deg
+  );
+  animation: about-halo-spin 7.5s linear infinite;
+}
+
+.about-portrait-frame {
+  position: relative;
+  z-index: 1;
+  border-radius: 21.5px;
+  padding: 6px;
+  background: linear-gradient(160deg, #161321 0%, #0b0912 100%);
+}
+
+.about-portrait-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 4.35;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #14111d;
+}
+
+.about-portrait-img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 16%;
+  animation: about-ken-burns 12s ease-in-out infinite alternate;
+  transition: transform 520ms var(--ease-out), filter 420ms var(--ease-out);
+  will-change: transform;
+}
+
+.about-portrait-stage:hover .about-portrait-img {
+  animation-play-state: paused;
+  transform: scale(1.06);
+  filter: contrast(1.03) saturate(1.05);
+}
+
+.about-portrait-vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(8, 7, 11, 0.72) 0%,
+    rgba(8, 7, 11, 0.16) 34%,
+    transparent 62%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Periodic Diagonal Glass Shimmer Sweep */
+.about-portrait-shimmer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.about-portrait-shimmer::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -130%;
+  width: 64%;
+  height: 140%;
+  background: linear-gradient(
+    112deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.04) 36%,
+    rgba(255, 255, 255, 0.24) 50%,
+    rgba(255, 194, 220, 0.08) 64%,
+    transparent 100%
+  );
+  transform: skewX(-22deg);
+  animation: about-shimmer-sweep 5.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+/* Pointer-Reactive Specular Light Glare */
+.about-portrait-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  opacity: var(--glare-opacity);
+  background: radial-gradient(
+    circle at var(--glare-x) var(--glare-y),
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 77, 141, 0.12) 28%,
+    transparent 64%
+  );
+  transition: opacity 260ms ease;
+}
+
+/* Floating Corner Aurora Sparkle */
+.about-portrait-spark {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(17, 15, 23, 0.92);
+  border: 1px solid rgba(255, 77, 141, 0.42);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5), 0 0 18px rgba(192, 75, 255, 0.34);
+  transform: translateZ(26px);
+  animation: about-spark-float 4.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Floating Glass Identity Pill */
+.about-portrait-badge {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px;
+  border-radius: var(--radius-pill);
+  background: rgba(13, 11, 20, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #f6f3fc;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.48);
+  transform: translateZ(24px);
+}
+
+.portrait-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gradient-aurora);
+  box-shadow: 0 0 10px rgba(255, 77, 141, 0.85);
+  animation: badge-dot-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes about-portrait-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes about-halo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes about-aura-pulse {
+  0%,
+  100% {
+    opacity: 0.58;
+    transform: scale(0.97);
+  }
+  50% {
+    opacity: 0.88;
+    transform: scale(1.03);
+  }
+}
+
+@keyframes about-ken-burns {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.055);
+  }
+}
+
+@keyframes about-shimmer-sweep {
+  0%,
+  62% {
+    left: -130%;
+    opacity: 0;
+  }
+  70% {
+    opacity: 1;
+  }
+  96%,
+  100% {
+    left: 155%;
+    opacity: 0;
+  }
+}
+
+@keyframes about-spark-float {
+  0%,
+  100% {
+    transform: translateZ(26px) translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateZ(26px) translateY(-5px) rotate(14deg);
+  }
+}
+
+@keyframes badge-dot-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.7;
+  }
+}
+
 /* About Staggered Reveal & Animated Stat Counters (Restored from First Deployment) */
 body.reveal-ready #about .about-stagger {
   opacity: 0;
@@ -921,9 +1243,17 @@ body.reveal-ready #about .about-stagger {
     transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+body.reveal-ready #about .about-portrait-stage.about-stagger {
+  transform: translateY(24px) scale(0.95);
+}
+
 body.reveal-ready #about .about-stagger.about-revealed {
   opacity: 1;
   transform: translateY(0);
+}
+
+body.reveal-ready #about .about-portrait-stage.about-stagger.about-revealed {
+  transform: translateY(0) scale(1);
 }
 
 .about-stats-grid {
@@ -2267,8 +2597,19 @@ body.reveal-ready .reveal.is-visible {
     animation: none;
   }
 
-  .tech-ribbon-track {
+  .tech-ribbon-track,
+  .about-portrait-float,
+  .about-portrait-aura,
+  .about-portrait-halo::before,
+  .about-portrait-img,
+  .about-portrait-shimmer::before,
+  .about-portrait-spark,
+  .portrait-badge-dot {
     animation: none;
+  }
+
+  .about-portrait-card {
+    transform: none;
   }
 
   body.reveal-ready #about .about-stagger,
@@ -2431,6 +2772,16 @@ body.reveal-ready .reveal.is-visible {
 
   .about-stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  .about-left-col {
+    align-items: center;
+    text-align: center;
+  }
+
+  .about-portrait-stage {
+    max-width: 268px;
+    margin: 0 auto;
   }
 
   .timeline-container {
