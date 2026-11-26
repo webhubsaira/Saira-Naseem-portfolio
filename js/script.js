@@ -1,11 +1,13 @@
 /**
- * Saira Naseem — Personal Developer Portfolio
+ * Saira Naseem — Signature Editorial Portfolio
  * Script: js/script.js
  * Pure ES6+ Vanilla JavaScript
  */
 
 const initPortfolio = () => {
   'use strict';
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ========================================================================
      1. Dynamic Copyright Year
@@ -16,20 +18,38 @@ const initPortfolio = () => {
   }
 
   /* ========================================================================
-     2. Sticky Header & Mobile Navigation Drawer
+     2. Scroll Progress Bar, Sticky Header & Mobile Navigation Drawer
      ======================================================================== */
   const siteHeader = document.getElementById('siteHeader');
+  const scrollProgressBar = document.getElementById('scrollProgressBar');
+  const floatingTopBtn = document.getElementById('floatingTopBtn');
   const navToggle = document.getElementById('navToggle');
   const mobileMenu = document.getElementById('mobileMenu');
   const mobileNavLinks = document.querySelectorAll('.mobile-nav-link, .mobile-contact-btn');
 
-  const updateHeaderScroll = () => {
-    if (!siteHeader) return;
-    siteHeader.classList.toggle('scrolled', window.scrollY > 24);
+  const updateScrollUI = () => {
+    const scrollTop = window.scrollY || window.pageYOffset;
+    if (siteHeader) {
+      siteHeader.classList.toggle('scrolled', scrollTop > 24);
+    }
+    if (floatingTopBtn) {
+      floatingTopBtn.classList.toggle('visible', scrollTop > 350);
+    }
+    if (scrollProgressBar) {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = scrollable > 0 ? Math.min(100, Math.max(0, (scrollTop / scrollable) * 100)) : 0;
+      scrollProgressBar.style.width = `${pct.toFixed(1)}%`;
+    }
   };
 
-  window.addEventListener('scroll', updateHeaderScroll, { passive: true });
-  updateHeaderScroll();
+  window.addEventListener('scroll', updateScrollUI, { passive: true });
+  updateScrollUI();
+
+  if (floatingTopBtn) {
+    floatingTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    });
+  }
 
   const closeMobileMenu = () => {
     if (!navToggle || !mobileMenu) return;
@@ -49,7 +69,7 @@ const initPortfolio = () => {
     });
 
     window.addEventListener('resize', () => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth > 768) {
         closeMobileMenu();
       }
     });
@@ -73,27 +93,31 @@ const initPortfolio = () => {
           if (entry.isIntersecting) {
             const activeId = entry.target.id;
             navLinks.forEach((link) => {
-              const matches = link.getAttribute('href') === `#${activeId}`;
-              link.classList.toggle('active', matches);
+              link.classList.toggle('active', link.getAttribute('href') === `#${activeId}`);
             });
           }
         });
       },
-      { rootMargin: '-35% 0px -55% 0px', threshold: 0 }
+      { rootMargin: '-34% 0px -54% 0px', threshold: 0 }
     );
 
     trackedSections.forEach((section) => navObserver.observe(section));
   }
 
   /* ========================================================================
-     4. Interactive Skills Category Filter
+     4. Interactive Skills Category Filter (24-Icon Work Stack)
      ======================================================================== */
   const skillChips = Array.from(document.querySelectorAll('.skill-chip'));
   const stackItems = Array.from(document.querySelectorAll('#workStackGrid .stack-item'));
-  let activeSkillFilter = null;
+  let activeSkillFilter = 'all';
 
   const applySkillFilter = (filterKey) => {
-    activeSkillFilter = activeSkillFilter === filterKey ? null : filterKey;
+    const nextFilter =
+      !filterKey || filterKey === 'all' || (activeSkillFilter === filterKey && filterKey !== 'all')
+        ? 'all'
+        : filterKey;
+
+    activeSkillFilter = nextFilter;
 
     skillChips.forEach((chip) => {
       const isMatch = chip.dataset.skillFilter === activeSkillFilter;
@@ -102,7 +126,7 @@ const initPortfolio = () => {
     });
 
     stackItems.forEach((item) => {
-      if (!activeSkillFilter) {
+      if (activeSkillFilter === 'all') {
         item.classList.remove('is-dimmed', 'is-highlighted');
         return;
       }
@@ -115,12 +139,12 @@ const initPortfolio = () => {
 
   skillChips.forEach((chip) => {
     chip.addEventListener('click', () => {
-      applySkillFilter(chip.dataset.skillFilter || null);
+      applySkillFilter(chip.dataset.skillFilter || 'all');
     });
   });
 
   /* ========================================================================
-     5. Interactive Projects Showcase Carousel & Full-Preview Lightbox
+     5. Interactive Dual-Device Projects Showcase & Full-Preview Lightbox
      ======================================================================== */
   const thumbButtons = Array.from(document.querySelectorAll('.project-thumb'));
   const tabletImg = document.getElementById('projectTabletImg');
@@ -150,6 +174,15 @@ const initPortfolio = () => {
   const getThumbImageSrc = (btn) => {
     const img = btn.querySelector('img');
     return img ? img.currentSrc || img.src || img.getAttribute('src') || '' : '';
+  };
+
+  const renderMetric = (el, boldText, restText) => {
+    if (!el) return;
+    el.textContent = '';
+    const strong = document.createElement('strong');
+    strong.textContent = boldText;
+    el.appendChild(strong);
+    el.appendChild(document.createTextNode(` ${restText}`));
   };
 
   const renderProject = (index, animate = true) => {
@@ -188,26 +221,14 @@ const initPortfolio = () => {
         phoneImg.style.objectPosition = phonePos;
       }
       if (projectTitle) projectTitle.textContent = title;
-      if (projectMetric1) {
-        projectMetric1.innerHTML = '';
-        const strong = document.createElement('strong');
-        strong.textContent = metric1Bold;
-        projectMetric1.appendChild(strong);
-        projectMetric1.appendChild(document.createTextNode(` ${metric1Rest}`));
-      }
-      if (projectMetric2) {
-        projectMetric2.innerHTML = '';
-        const strong = document.createElement('strong');
-        strong.textContent = metric2Bold;
-        projectMetric2.appendChild(strong);
-        projectMetric2.appendChild(document.createTextNode(` ${metric2Rest}`));
-      }
+      renderMetric(projectMetric1, metric1Bold, metric1Rest);
+      renderMetric(projectMetric2, metric2Bold, metric2Rest);
       if (projectLiveLink) projectLiveLink.href = liveUrl;
       if (projectCodeLink) projectCodeLink.href = codeUrl;
       if (projectDescription) projectDescription.textContent = desc;
     };
 
-    if (!animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!animate || prefersReducedMotion) {
       applyContent();
       return;
     }
@@ -224,7 +245,7 @@ const initPortfolio = () => {
         phoneImg?.classList.remove('is-swapping');
         detailsRow?.classList.remove('is-swapping');
       });
-    }, 140);
+    }, 145);
   };
 
   thumbButtons.forEach((btn, idx) => {
@@ -235,15 +256,9 @@ const initPortfolio = () => {
     });
   });
 
-  prevBtn?.addEventListener('click', () => {
-    renderProject(currentProjectIndex - 1, true);
-  });
+  prevBtn?.addEventListener('click', () => renderProject(currentProjectIndex - 1, true));
+  nextBtn?.addEventListener('click', () => renderProject(currentProjectIndex + 1, true));
 
-  nextBtn?.addEventListener('click', () => {
-    renderProject(currentProjectIndex + 1, true);
-  });
-
-  // Keyboard navigation on thumbnail strip
   const thumbsTray = document.querySelector('.project-thumbs-tray');
   thumbsTray?.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowRight') {
@@ -257,10 +272,9 @@ const initPortfolio = () => {
     }
   });
 
-  // Initial sync without animation
   renderProject(0, false);
 
-  // Full-screenshot Lightbox Modal
+  // Full-Page Lightbox Modal
   const openLightbox = () => {
     if (!lightbox || !lightboxImg) return;
     const activeBtn = thumbButtons[currentProjectIndex];
@@ -306,7 +320,43 @@ const initPortfolio = () => {
   });
 
   /* ========================================================================
-     6. Contact Form Quick-Intent Chips & Web3Forms AJAX Submission
+     6. One-Click Copy Direct Email
+     ======================================================================== */
+  const copyEmailBtn = document.getElementById('copyEmailBtn');
+  const copyEmailLabel = document.getElementById('copyEmailLabel');
+  let copyTimerId = null;
+
+  if (copyEmailBtn && copyEmailLabel) {
+    copyEmailBtn.addEventListener('click', async () => {
+      const email = copyEmailBtn.dataset.email || 'sairanaseem606729@gmail.com';
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(email);
+        } else {
+          const tempInput = document.createElement('textarea');
+          tempInput.value = email;
+          tempInput.setAttribute('readonly', '');
+          tempInput.style.position = 'fixed';
+          tempInput.style.opacity = '0';
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand('copy');
+          document.body.removeChild(tempInput);
+        }
+
+        copyEmailLabel.textContent = 'Copied!';
+        window.clearTimeout(copyTimerId);
+        copyTimerId = window.setTimeout(() => {
+          copyEmailLabel.textContent = 'Copy Email';
+        }, 2000);
+      } catch (err) {
+        console.error('Copy failed:', err);
+      }
+    });
+  }
+
+  /* ========================================================================
+     7. Contact Form Quick-Intent Chips & Web3Forms AJAX Submission
      ======================================================================== */
   const intentChips = Array.from(document.querySelectorAll('.intent-chip'));
   const subjectInput = document.getElementById('contactSubjectInput');
@@ -337,8 +387,20 @@ const initPortfolio = () => {
   });
 
   const showAlert = (type, message) => {
-    if (formSuccessAlert) formSuccessAlert.hidden = type !== 'success';
-    if (formErrorAlert) formErrorAlert.hidden = type !== 'error';
+    if (formSuccessAlert) {
+      formSuccessAlert.hidden = type !== 'success';
+      formSuccessAlert.classList.remove('form-alert-visible');
+      if (type === 'success') {
+        requestAnimationFrame(() => formSuccessAlert.classList.add('form-alert-visible'));
+      }
+    }
+    if (formErrorAlert) {
+      formErrorAlert.hidden = type !== 'error';
+      formErrorAlert.classList.remove('form-alert-visible');
+      if (type === 'error') {
+        requestAnimationFrame(() => formErrorAlert.classList.add('form-alert-visible'));
+      }
+    }
     if (formErrorText && type === 'error' && message) {
       formErrorText.textContent = message;
     }
@@ -347,9 +409,7 @@ const initPortfolio = () => {
   if (contactForm) {
     const inputs = Array.from(contactForm.querySelectorAll('.form-input, .form-textarea'));
     inputs.forEach((input) => {
-      input.addEventListener('input', () => {
-        input.classList.remove('is-invalid');
-      });
+      input.addEventListener('input', () => input.classList.remove('is-invalid'));
     });
 
     contactForm.addEventListener('submit', async (event) => {
@@ -411,10 +471,19 @@ const initPortfolio = () => {
   }
 
   /* ========================================================================
-     7. Scroll Reveal Animations
+     8. Scroll Reveal, About Stat Counters & Scroll-Drawing Experience Timeline
+        (Restored from First Deployment)
      ======================================================================== */
   const revealEls = Array.from(document.querySelectorAll('.reveal'));
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const aboutSection = document.getElementById('about');
+  const aboutStaggerEls = aboutSection
+    ? Array.from(aboutSection.querySelectorAll('.about-stagger'))
+    : [];
+  const statNumbers = aboutSection
+    ? Array.from(aboutSection.querySelectorAll('.stat-number'))
+    : [];
+  const experienceSection = document.getElementById('experience');
+  const timelineContainer = document.getElementById('experienceTimeline');
 
   if (!prefersReducedMotion && 'IntersectionObserver' in window && revealEls.length > 0) {
     document.body.classList.add('reveal-ready');
@@ -427,12 +496,111 @@ const initPortfolio = () => {
           }
         });
       },
-      { threshold: 0.08, rootMargin: '0px 0px -30px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -36px 0px' }
     );
 
     revealEls.forEach((el) => revealObserver.observe(el));
   } else {
     revealEls.forEach((el) => el.classList.add('is-visible'));
+  }
+
+  // 8b. About Staggered Cascade + Animated Counting Stat Numbers
+  const animateStatCounters = () => {
+    if (prefersReducedMotion) {
+      statNumbers.forEach((numEl) => {
+        numEl.textContent = `${numEl.dataset.count || 0}${numEl.dataset.suffix || ''}`;
+      });
+      return;
+    }
+
+    statNumbers.forEach((numEl, index) => {
+      const target = Number(numEl.dataset.count || 0);
+      const suffix = numEl.dataset.suffix || '';
+      const duration = 1200;
+      const startTime = performance.now() + index * 180;
+
+      const updateCounter = (currentTime) => {
+        if (currentTime < startTime) {
+          requestAnimationFrame(updateCounter);
+          return;
+        }
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        numEl.textContent = `${Math.round(target * eased)}${suffix}`;
+
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        }
+      };
+
+      requestAnimationFrame(updateCounter);
+    });
+  };
+
+  if (aboutSection && (aboutStaggerEls.length > 0 || statNumbers.length > 0)) {
+    if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+      const aboutObserver = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              aboutStaggerEls.forEach((el, idx) => {
+                window.setTimeout(() => el.classList.add('about-revealed'), idx * 120);
+              });
+              animateStatCounters();
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.16 }
+      );
+      aboutObserver.observe(aboutSection);
+    } else {
+      aboutStaggerEls.forEach((el) => el.classList.add('about-revealed'));
+      animateStatCounters();
+    }
+  }
+
+  // 8c. Scroll-Driven Experience Timeline Line Draw & Pop-In Markers
+  if (experienceSection && timelineContainer) {
+    const updateTimeline = () => {
+      const rect = experienceSection.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const progress = Math.min(
+        1,
+        Math.max(0, (viewportHeight - rect.top) / (viewportHeight + rect.height * 0.65))
+      );
+
+      timelineContainer.style.setProperty(
+        '--timeline-progress',
+        prefersReducedMotion ? '1' : progress.toFixed(3)
+      );
+
+      if (progress > 0.08) {
+        experienceSection.classList.add('timeline-active');
+      }
+    };
+
+    if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+      const timelineObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              experienceSection.classList.add('timeline-active');
+              window.addEventListener('scroll', updateTimeline, { passive: true });
+              updateTimeline();
+            } else {
+              window.removeEventListener('scroll', updateTimeline);
+            }
+          });
+        },
+        { threshold: 0.08 }
+      );
+      timelineObserver.observe(experienceSection);
+    } else {
+      experienceSection.classList.add('timeline-active');
+      timelineContainer.style.setProperty('--timeline-progress', '1');
+    }
   }
 };
 
