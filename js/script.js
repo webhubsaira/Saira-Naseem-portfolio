@@ -172,8 +172,16 @@ const initPortfolio = () => {
   let swapTimeoutId = null;
 
   const getThumbImageSrc = (btn) => {
-    const img = btn.querySelector('img');
+    const img = btn.querySelector('.thumb-img') || btn.querySelector('img:not(.phone-src-img)');
     return img ? img.currentSrc || img.src || img.getAttribute('src') || '' : '';
+  };
+
+  const getPhoneImageSrc = (btn) => {
+    const phoneSource = btn.querySelector('.phone-src-img');
+    if (phoneSource) {
+      return phoneSource.currentSrc || phoneSource.src || phoneSource.getAttribute('src') || getThumbImageSrc(btn);
+    }
+    return getThumbImageSrc(btn);
   };
 
   const renderMetric = (el, boldText, restText) => {
@@ -199,6 +207,7 @@ const initPortfolio = () => {
     });
 
     const imgSrc = getThumbImageSrc(activeBtn);
+    const phoneSrc = getPhoneImageSrc(activeBtn);
     const title = activeBtn.dataset.title || '';
     const metric1Bold = activeBtn.dataset.metric1Bold || '';
     const metric1Rest = activeBtn.dataset.metric1Rest || '';
@@ -217,7 +226,7 @@ const initPortfolio = () => {
         tabletImg.style.objectPosition = tabletPos;
       }
       if (phoneImg) {
-        phoneImg.src = imgSrc;
+        phoneImg.src = phoneSrc;
         phoneImg.style.objectPosition = phonePos;
       }
       if (projectTitle) projectTitle.textContent = title;
@@ -496,7 +505,7 @@ const initPortfolio = () => {
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -36px 0px' }
+      { threshold: 0.01, rootMargin: '0px 0px 40px 0px' }
     );
 
     revealEls.forEach((el) => revealObserver.observe(el));
