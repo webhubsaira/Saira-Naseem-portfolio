@@ -561,13 +561,85 @@ const initPortfolio = () => {
             }
           });
         },
-        { threshold: 0.16 }
+        { threshold: 0.06 }
       );
       aboutObserver.observe(aboutSection);
     } else {
       aboutStaggerEls.forEach((el) => el.classList.add('about-revealed'));
       animateStatCounters();
     }
+  }
+
+  // 8b-2. Interactive 3D Perspective Tilt & Specular Spotlight on About Portrait
+  const portraitStage = document.getElementById('aboutPortraitStage');
+  const portraitCard = document.getElementById('aboutPortraitCard');
+
+  if (portraitStage && portraitCard && !prefersReducedMotion) {
+    let targetTiltX = 0;
+    let targetTiltY = 0;
+    let currentTiltX = 0;
+    let currentTiltY = 0;
+    let targetGlareX = 50;
+    let targetGlareY = 35;
+    let currentGlareX = 50;
+    let currentGlareY = 35;
+    let tiltRafId = null;
+
+    const animateTilt = () => {
+      currentTiltX += (targetTiltX - currentTiltX) * 0.14;
+      currentTiltY += (targetTiltY - currentTiltY) * 0.14;
+      currentGlareX += (targetGlareX - currentGlareX) * 0.16;
+      currentGlareY += (targetGlareY - currentGlareY) * 0.16;
+
+      portraitCard.style.setProperty('--tilt-x', `${currentTiltX.toFixed(2)}deg`);
+      portraitCard.style.setProperty('--tilt-y', `${currentTiltY.toFixed(2)}deg`);
+      portraitCard.style.setProperty('--glare-x', `${currentGlareX.toFixed(1)}%`);
+      portraitCard.style.setProperty('--glare-y', `${currentGlareY.toFixed(1)}%`);
+
+      const stillMoving =
+        Math.abs(targetTiltX - currentTiltX) > 0.04 ||
+        Math.abs(targetTiltY - currentTiltY) > 0.04 ||
+        Math.abs(targetGlareX - currentGlareX) > 0.15 ||
+        Math.abs(targetGlareY - currentGlareY) > 0.15;
+
+      if (stillMoving) {
+        tiltRafId = requestAnimationFrame(animateTilt);
+      } else {
+        tiltRafId = null;
+      }
+    };
+
+    const scheduleTiltFrame = () => {
+      if (tiltRafId === null) {
+        tiltRafId = requestAnimationFrame(animateTilt);
+      }
+    };
+
+    portraitStage.addEventListener('pointermove', (event) => {
+      if (event.pointerType === 'touch') return;
+      const rect = portraitStage.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+
+      const normX = Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width) * 2 - 1));
+      const normY = Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height) * 2 - 1));
+
+      targetTiltX = -normY * 8.5;
+      targetTiltY = normX * 8.5;
+      targetGlareX = ((normX + 1) / 2) * 100;
+      targetGlareY = ((normY + 1) / 2) * 100;
+
+      portraitCard.style.setProperty('--glare-opacity', '1');
+      scheduleTiltFrame();
+    });
+
+    portraitStage.addEventListener('pointerleave', () => {
+      targetTiltX = 0;
+      targetTiltY = 0;
+      targetGlareX = 50;
+      targetGlareY = 35;
+      portraitCard.style.setProperty('--glare-opacity', '0');
+      scheduleTiltFrame();
+    });
   }
 
   // 8c. Scroll-Driven Experience Timeline Line Draw & Pop-In Markers
