@@ -443,6 +443,25 @@ ol {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
+}
+
+.brand-logo-img {
+  display: block;
+  height: 46px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 12px rgba(192, 75, 255, 0.22));
+  transition: transform var(--t-fast), filter var(--t-fast), height var(--t-med);
+}
+
+.site-header.is-scrolled .brand-logo-img {
+  height: 40px;
+}
+
+.brand-wordmark:hover .brand-logo-img {
+  transform: translateY(-1px) scale(1.04);
+  filter: drop-shadow(0 4px 18px rgba(255, 77, 141, 0.42));
 }
 
 .brand-dot {
@@ -2388,6 +2407,25 @@ body.reveal-ready #experience:not(.timeline-active) .timeline-marker {
   flex-wrap: wrap;
 }
 
+.footer-logo-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-logo-img {
+  display: block;
+  height: 54px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 14px rgba(192, 75, 255, 0.24));
+  transition: transform var(--t-fast), filter var(--t-fast);
+}
+
+.footer-logo-link:hover .footer-logo-img {
+  transform: translateY(-2px) scale(1.03);
+  filter: drop-shadow(0 4px 20px rgba(255, 77, 141, 0.45));
+}
+
 .footer-signature {
   font-size: 28px;
   color: #ffffff;
@@ -2397,7 +2435,7 @@ body.reveal-ready #experience:not(.timeline-active) .timeline-marker {
 .footer-tagline {
   font-size: 13px;
   color: var(--text-muted);
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
 .footer-nav {
@@ -2687,6 +2725,15 @@ body.reveal-ready .reveal.is-visible {
 
   .nav-toggle {
     display: inline-flex;
+  }
+
+  .brand-logo-img,
+  .site-header.is-scrolled .brand-logo-img {
+    height: 38px;
+  }
+
+  .footer-logo-img {
+    height: 46px;
   }
 
   .hero-section {
